@@ -182,23 +182,3 @@ CyoloActivity_CL
 | summarize EventCount = count() by countryCode
 | order by EventCount desc
 ```
-
-## Available Fields
-
-The `CyoloActivity_CL` table includes these fields:
-
-| Field | Type | Description |
-|-------|------|-------------|
-| TimeGenerated | datetime | When the event occurred (UTC) |
-| eventKind | string | Type of event |
-| Action | string | What action was performed |
-| Result | string | Success or failure |
-| subjectName | string | User or entity that performed the action |
-| objectName | string | Target resource |
-| remoteAddress | string | Source IP |
-| countryCode | string | Geographic location |
-| sessionId | string | Session identifier |
-| Severity | string | Event severity |
-| siteName | string | Cyolo site name |
-| destinationHost | string | Target host |
-| destinationPort | string | Target port |
