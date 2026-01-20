@@ -2,9 +2,9 @@
   "name": "CyoloActivity_DCR",
   "apiVersion": "2021-09-01-preview",
   "type": "Microsoft.Insights/dataCollectionRules",
-  "location": "eastus",
+  "location": "<your-region>",
   "properties": {
-    "dataCollectionEndpointId": "/subscriptions/ad5de96e-0ef7-4df4-9344-c32a031bba30/resourceGroups/Cyolo-Sentinel-Solution/providers/Microsoft.Insights/dataCollectionEndpoints/Cyolo-Sentinel-DCE",
+    "dataCollectionEndpointId": "/subscriptions/<subscription-id>/resourceGroups/<resource-group>/providers/Microsoft.Insights/dataCollectionEndpoints/<dce-name>",
     "streamDeclarations": {
       "Custom-Cyolo-Sentinel-DCR": {
         "columns": [
@@ -47,15 +47,15 @@
     "destinations": {
       "logAnalytics": [
         {
-          "workspaceResourceId": "/subscriptions/ad5de96e-0ef7-4df4-9344-c32a031bba30/resourceGroups/Cyolo-Sentinel-Solution/providers/Microsoft.OperationalInsights/workspaces/Cyolo-Sentinel-Workspace",
-          "name": "Cyolo-Sentinel-Workspace"
+          "workspaceResourceId": "/subscriptions/<subscription-id>/resourceGroups/<resource-group>/providers/Microsoft.OperationalInsights/workspaces/<workspace-name>",
+          "name": "<workspace-name>"
         }
       ]
     },
     "dataFlows": [
       {
         "streams": ["Custom-Cyolo-Sentinel-DCR"],
-        "destinations": ["Cyolo-Sentinel-Workspace"],
+        "destinations": ["<workspace-name>"],
         "transformKql": "source \r\n| project-rename \r\n TimeGenerated=timestamp,eventKind=['kind'],ID=id,remoteAddress=remote_address,Action=action,Result=result,subjectId=subject_id,subjectName=subject_name,subjectKind=subject_kind,authorityKind=authority_kind,authorityId=authority_id,authorityName=authority_name,objectKind=object_kind,objectId=object_id,objectName=object_name,sessionId=session_id,Message=message,nodeId=node_id,Client=client,Data=data,Rules=rules,countryCode=country_code,HostName=hostname,transactionId=transaction_id,eventId=event_id,Severity=severity,siteId=site_id,siteName=site_name,credentialsOrigin=credentials_origin,credentialsId=credentials_id,credentialsName=credentials_name,destinationHost=destination_host,destinationPort=destination_port",
         "outputStream": "Custom-CyoloActivity_CL"
       }

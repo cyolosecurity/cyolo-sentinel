@@ -30,7 +30,7 @@ Solutions/
 │
 └── CyoloSentinelSolution/              # Extended solution (multiple log types)
     ├── Data Connectors/
-    │   └── CyoloSentinal_ccp/
+    │   └── CyoloSentinel_ccp/
     │       ├── DataConnectorDefinition.json
     │       ├── PollingConfig.json
     │       ├── table_analytics.json

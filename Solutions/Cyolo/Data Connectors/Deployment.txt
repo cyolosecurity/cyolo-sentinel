@@ -3,7 +3,7 @@
   --template-file Solutions/Cyolo/Data\ Connectors/table.json \
   --parameters workspaceName="Cyolo-Sentinel-Workspace"
 
-create DCE (Cyolo-Sentinal-DCE)
+create DCE (Cyolo-Sentinel-DCE)
 
 
 az monitor data-collection rule create \
@@ -31,4 +31,4 @@ az deployment group create \
   --resource-group Cyolo-Sentinel-Solution \
   --template-file Solutions/Cyolo/Workbooks/UserActivityWorkbook_ARM_Template.json \
   --parameters workbookName="CyoloUserActivityWorkbook" \
-               workspaceResourceId="/subscriptions/ad5de96e-0ef7-4df4-9344-c32a031bba30/resourceGroups/Cyolo-Sentinel-Solution/providers/Microsoft.OperationalInsights/workspaces/Cyolo-Sentinel-Workspace"
+               workspaceResourceId="/subscriptions/<subscription-id>/resourceGroups/<resource-group>/providers/Microsoft.OperationalInsights/workspaces/<workspace-name>"

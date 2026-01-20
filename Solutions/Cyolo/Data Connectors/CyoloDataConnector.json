@@ -40,7 +40,7 @@
     },
     "apiEndpoint": {
       "type": "string",
-      "defaultValue": "https://console.elad.cyolo.io/v1/activity_log",
+      "defaultValue": "https://console.{tenant}.cyolo.io/v1/activity_log",
       "metadata": {
         "description": "Cyolo API endpoint"
       }

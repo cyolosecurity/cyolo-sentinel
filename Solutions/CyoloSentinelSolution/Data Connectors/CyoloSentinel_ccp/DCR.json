@@ -120,7 +120,7 @@
     "destinations": {
       "logAnalytics": [
         {
-          "workspaceResourceId": "/subscriptions/ad5de96e-0ef7-4df4-9344-c32a031bba30/resourceGroups/managed-cyolo-sentinel/providers/Microsoft.OperationalInsights/workspaces/managed-cyolo-sentinel",
+          "workspaceResourceId": "/subscriptions/<subscription-id>/resourceGroups/<resource-group>/providers/Microsoft.OperationalInsights/workspaces/<workspace-name>",
           "name": "Cyolo-Sentinel-Workspace"
         }
       ]
@@ -145,7 +145,7 @@
         "outputStream": "Custom-CyoloSentinelSystemTable_CL"
       }
     ],
-    "dataCollectionEndpointId": "/subscriptions/ad5de96e-0ef7-4df4-9344-c32a031bba30/resourceGroups/managed-cyolo-sentinel/providers/Microsoft.Insights/dataCollectionEndpoints/managed-cyolo-sentinel"
+    "dataCollectionEndpointId": "/subscriptions/<subscription-id>/resourceGroups/<resource-group>/providers/Microsoft.Insights/dataCollectionEndpoints/<dce-name>"
 
   }
 }

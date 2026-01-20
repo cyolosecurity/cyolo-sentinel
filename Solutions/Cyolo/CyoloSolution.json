@@ -2,7 +2,7 @@
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "metadata": {
-    "author": "Cyolo.io - support@x.ai",
+    "author": "Cyolo.io - support@cyolo.io",
     "comments": "Solution template for Cyolo Activity Connector"
   },
   "parameters": {
@@ -30,7 +30,7 @@
     }
   },
   "variables": {
-    "email": "support@x.ai",
+    "email": "support@cyolo.io",
     "_email": "[variables('email')]",
     "_solutionName": "Cyolo Activity Connector",
     "_solutionVersion": "1.0.0",
@@ -76,7 +76,7 @@
                   "id": "CyoloActivityConnector",
                   "title": "Cyolo Activity Connector (using REST API)",
                   "publisher": "Cyolo.io",
-                  "descriptionMarkdown": "The [Cyolo Activity Connector](https://console.elad.cyolo.io/v1/activity_log) data connector allows you to connect to your Cyolo instance and ingest activity logs into Microsoft Sentinel. The data connector is built on Microsoft Sentinel's Codeless Connector Platform and uses the Cyolo API to fetch security events and supports DCR-based ingestion time transformations that parse the received event data into custom columns for better query performance.",
+                  "descriptionMarkdown": "The [Cyolo Activity Connector](https://console.{tenant}.cyolo.io/v1/activity_log) data connector allows you to connect to your Cyolo instance and ingest activity logs into Microsoft Sentinel. The data connector is built on Microsoft Sentinel's Codeless Connector Platform and uses the Cyolo API to fetch security events and supports DCR-based ingestion time transformations that parse the received event data into custom columns for better query performance.",
                   "graphQueriesTableName": "CyoloActivity_CL",
                   "graphQueries": [
                     {
@@ -135,7 +135,7 @@
                     "customs": [
                       {
                         "name": "Cyolo API Key",
-                        "description": "A Cyolo API username and password is required. [See the documentation to learn more about Cyolo SIEM API](https://console.elad.cyolo.io/docs)."
+                        "description": "A Cyolo API username and password is required. [See the documentation to learn more about Cyolo SIEM API](https://console.{tenant}.cyolo.io/docs)."
                       }
                     ]
                   },
@@ -147,7 +147,7 @@
                           "type": "Textbox",
                           "parameters": {
                             "label": "Path to console",
-                            "placeholder": "console.elad.cyolo.io/v1/activity_log",
+                            "placeholder": "console.{tenant}.cyolo.io/v1/activity_log",
                             "type": "text",
                             "name": "domainname"
                           }
@@ -204,9 +204,9 @@
                 },
                 "support": {
                   "name": "Cyolo.io",
-                  "email": "support@x.ai",
+                  "email": "support@cyolo.io",
                   "tier": "Partner",
-                  "link": "https://x.ai/support"
+                  "link": "https://cyolo.io/support"
                 },
                 "dependencies": {
                   "criteria": [
@@ -353,7 +353,7 @@
           "id": "CyoloActivityConnector",
           "title": "Cyolo Activity Connector (using REST API)",
           "publisher": "Cyolo.io",
-          "descriptionMarkdown": "The [Cyolo Activity Connector](https://console.elad.cyolo.io/v1/activity_log) data connector allows you to connect to your Cyolo instance and ingest activity logs into Microsoft Sentinel. The data connector is built on Microsoft Sentinel's Codeless Connector Platform and uses the Cyolo API to fetch security events and supports DCR-based ingestion time transformations that parse the received event data into custom columns for better query performance.",
+          "descriptionMarkdown": "The [Cyolo Activity Connector](https://console.{tenant}.cyolo.io/v1/activity_log) data connector allows you to connect to your Cyolo instance and ingest activity logs into Microsoft Sentinel. The data connector is built on Microsoft Sentinel's Codeless Connector Platform and uses the Cyolo API to fetch security events and supports DCR-based ingestion time transformations that parse the received event data into custom columns for better query performance.",
           "graphQueriesTableName": "CyoloActivity_CL",
           "graphQueries": [
             {
@@ -412,7 +412,7 @@
             "customs": [
               {
                 "name": "Cyolo API Key",
-                "description": "A Cyolo API username and password is required. [See the documentation to learn more about Cyolo SIEM API](https://console.elad.cyolo.io/docs)."
+                "description": "A Cyolo API username and password is required. [See the documentation to learn more about Cyolo SIEM API](https://console.{tenant}.cyolo.io/docs)."
               }
             ]
           },
@@ -424,7 +424,7 @@
                   "type": "Textbox",
                   "parameters": {
                     "label": "Path to console",
-                    "placeholder": "console.elad.cyolo.io/v1/activity_log",
+                    "placeholder": "console.{tenant}.cyolo.io/v1/activity_log",
                     "type": "text",
                     "name": "domainname"
                   }
@@ -481,9 +481,9 @@
         },
         "support": {
           "name": "Cyolo.io",
-          "email": "support@x.ai",
+          "email": "support@cyolo.io",
           "tier": "Partner",
-          "link": "https://x.ai/support"
+          "link": "https://cyolo.io/support"
         },
         "dependencies": {
           "criteria": [
@@ -561,9 +561,9 @@
                 },
                 "support": {
                   "name": "Cyolo.io",
-                  "email": "support@x.ai",
+                  "email": "support@cyolo.io",
                   "tier": "Partner",
-                  "link": "https://x.ai/support"
+                  "link": "https://cyolo.io/support"
                 }
               }
             },
@@ -636,11 +636,11 @@
         "contentSchemaVersion": "3.0.0",
         "displayName": "Cyolo Activity Connector",
         "publisherDisplayName": "Cyolo.io, Cyolo.io Corporation",
-        "descriptionHtml": "<p><strong>Note:</strong> <em>There may be <a href=\"https://aka.ms/sentinelsolutionsknownissues\">known issues</a> pertaining to this Solution, please refer to them before installing.</em></p>\n<p>The <a href=\"https://console.elad.cyolo.io/v1/activity_log\">Cyolo Activity Connector</a> solution for Microsoft Sentinel allows you to connect to your Cyolo instance and ingest activity logs into your Microsoft Sentinel workspace using the Cyolo API.</p>\n<p><strong>Underlying Microsoft Technologies used:</strong></p>\n<p>This solution takes a dependency on the following technologies, and some of these dependencies either may be in Preview state or might result in additional ingestion or operational costs:</p>\n<ol type=\"a\">\n<li><a href=\"https://learn.microsoft.com/en-us/azure/sentinel/create-custom-connector#connect-with-the-codeless-connector-platform\">Codeless Connector Platform (CCP)</a></li>\n</ol>\n<p><strong>Data Connectors:</strong> 1</p>\n<p><a href=\"https://aka.ms/azuresentinel\">Learn more about Microsoft Sentinel</a> | <a href=\"https://aka.ms/azuresentinelsolutionsdoc\">Learn more about Solutions</a></p>\n",
+        "descriptionHtml": "<p><strong>Note:</strong> <em>There may be <a href=\"https://aka.ms/sentinelsolutionsknownissues\">known issues</a> pertaining to this Solution, please refer to them before installing.</em></p>\n<p>The <a href=\"https://console.{tenant}.cyolo.io/v1/activity_log\">Cyolo Activity Connector</a> solution for Microsoft Sentinel allows you to connect to your Cyolo instance and ingest activity logs into your Microsoft Sentinel workspace using the Cyolo API.</p>\n<p><strong>Underlying Microsoft Technologies used:</strong></p>\n<p>This solution takes a dependency on the following technologies, and some of these dependencies either may be in Preview state or might result in additional ingestion or operational costs:</p>\n<ol type=\"a\">\n<li><a href=\"https://learn.microsoft.com/en-us/azure/sentinel/create-custom-connector#connect-with-the-codeless-connector-platform\">Codeless Connector Platform (CCP)</a></li>\n</ol>\n<p><strong>Data Connectors:</strong> 1</p>\n<p><a href=\"https://aka.ms/azuresentinel\">Learn more about Microsoft Sentinel</a> | <a href=\"https://aka.ms/azuresentinelsolutionsdoc\">Learn more about Solutions</a></p>\n",
         "contentKind": "Solution",
         "contentProductId": "[variables('_solutioncontentProductId')]",
         "id": "[variables('_solutioncontentProductId')]",
-        "icon": "<img src=\"https://x.ai/assets/cyolo-logo.svg\" width=\"75px\" height=\"75px\">",
+        "icon": "<img src=\"https://cyolo.io/assets/cyolo-logo.svg\" width=\"75px\" height=\"75px\">",
         "contentId": "[variables('_solutionId')]",
         "parentId": "[variables('_solutionId')]",
         "source": {
@@ -654,9 +654,9 @@
         },
         "support": {
           "name": "Cyolo.io",
-          "email": "support@x.ai",
+          "email": "support@cyolo.io",
           "tier": "Partner",
-          "link": "https://x.ai/support"
+          "link": "https://cyolo.io/support"
         },
         "dependencies": {
           "operator": "AND",
