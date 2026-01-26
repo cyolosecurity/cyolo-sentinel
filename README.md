@@ -62,7 +62,9 @@ Before you start, you'll need:
 2. Microsoft Sentinel enabled on your workspace (if using existing workspace)
 3. Cyolo API credentials (Key ID and Secret) with log access permissions
 
-> **Note:** If you don't have an existing Log Analytics workspace, the solution can create one for you during deployment.
+> **Note:** 
+> - If you don't have an existing Log Analytics workspace, the solution will create one for you **and automatically enable Microsoft Sentinel** on it.
+> - If you're using an existing workspace, make sure Microsoft Sentinel is already enabled on it.
 
 To get API credentials from Cyolo:
 

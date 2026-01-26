@@ -103,6 +103,25 @@
       }
     },
     {
+      "condition": "[parameters('createNewWorkspace')]",
+      "type": "Microsoft.OperationsManagement/solutions",
+      "apiVersion": "2015-11-01-preview",
+      "name": "[concat('SecurityInsights(', parameters('workspace'), ')')]",
+      "location": "[parameters('workspace-location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('workspace'))]"
+      ],
+      "properties": {
+        "workspaceResourceId": "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('workspace'))]"
+      },
+      "plan": {
+        "name": "[concat('SecurityInsights(', parameters('workspace'), ')')]",
+        "product": "OMSGallery/SecurityInsights",
+        "promotionCode": "",
+        "publisher": "Microsoft"
+      }
+    },
+    {
       "condition": "[parameters('enableAnalyticsLogs')]",
       "name": "[concat(parameters('workspace'), '/Custom-CyoloSentinelAnalyticsTable_CL')]",
       "apiVersion": "2022-10-01",
