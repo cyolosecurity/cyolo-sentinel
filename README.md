@@ -43,14 +43,16 @@ Solutions/
 
 ## Data Tables
 
-The solution creates the following custom tables in your Log Analytics workspace:
+The solution can create the following custom tables in your Log Analytics workspace (depending on which log streams you enable):
 
-| Table | Description |
-|-------|-------------|
-| `CyoloActivity_CL` | User access events, authentication, sessions |
-| `CyoloSentinelAnalyticsTable_CL` | Behavioral analytics data |
-| `CyoloSentinelAuditTable_CL` | Admin and configuration changes |
-| `CyoloSentinelSystemTable_CL` | System health and operational events |
+| Table | Description | Enable Option |
+|-------|-------------|---------------|
+| `CyoloActivity_CL` | User access events, authentication, sessions | Basic solution |
+| `CyoloSentinelAnalyticsTable_CL` | Behavioral analytics data | `enableAnalyticsLogs` |
+| `CyoloSentinelAuditTable_CL` | Admin and configuration changes | `enableAuditLogs` |
+| `CyoloSentinelSystemTable_CL` | System health and operational events | `enableSystemLogs` |
+
+> **Note:** Only the tables for enabled log streams will be created during deployment.
 
 ## Prerequisites
 
@@ -69,6 +71,21 @@ To get API credentials from Cyolo:
 
 ## Installation
 
+### Selecting Log Streams
+
+The **CyoloSentinelSolution** supports selective log stream ingestion. During deployment, you can choose which log types to enable:
+
+- **Analytics Logs** - Behavioral analytics, user activity patterns, and access trends
+- **Audit Logs** - Administrative actions, configuration changes, and compliance events  
+- **System Logs** - System health, performance metrics, and operational diagnostics
+
+This allows you to:
+- **Reduce costs** by ingesting only the logs you need
+- **Focus monitoring** on specific security areas
+- **Optimize performance** with smaller data volumes
+
+All log streams are enabled by default, but you can customize this during deployment using the checkboxes in the Azure Portal UI.
+
 ### Quick Deploy
 
 You can deploy the solution directly from the Azure Portal by clicking the button below:
@@ -83,7 +100,12 @@ You can deploy the solution directly from the Azure Portal by clicking the butto
 
 ### Manual Deployment via CLI
 
-If you prefer to deploy step by step, here's the process:
+If you prefer to deploy step by step, here's the process.
+
+> **Note:** When using CLI deployment, you can control which log streams are enabled by adding these parameters:
+> - `--parameters enableAnalyticsLogs=true enableAuditLogs=true enableSystemLogs=false`
+> 
+> This example would enable Analytics and Audit logs, but disable System logs.
 
 **1. Create the custom table**
 
