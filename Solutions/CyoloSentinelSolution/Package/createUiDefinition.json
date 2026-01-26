@@ -23,10 +23,19 @@
         }
       },
       {
+        "name": "workspaceInfo",
+        "type": "Microsoft.Common.InfoBox",
+        "options": {
+          "icon": "Info",
+          "text": "For new resource groups, select 'Create new workspace' to automatically create a Log Analytics workspace with Microsoft Sentinel enabled. If using an existing workspace, ensure Microsoft Sentinel is already enabled on it."
+        },
+        "visible": true
+      },
+      {
         "name": "workspaceSelector",
         "type": "Microsoft.Common.OptionsGroup",
         "label": "Log Analytics Workspace",
-        "defaultValue": "Use existing workspace",
+        "defaultValue": "Create new workspace",
         "toolTip": "Choose to use an existing workspace or create a new one",
         "constraints": {
           "allowedValues": [
@@ -59,8 +68,9 @@
         "name": "newWorkspaceName",
         "type": "Microsoft.Common.TextBox",
         "label": "New Workspace Name",
+        "defaultValue": "CyoloLogAnalyticsWorkspace",
         "placeholder": "Enter workspace name",
-        "toolTip": "Name for the new Log Analytics workspace to be created",
+        "toolTip": "Name for the new Log Analytics workspace to be created. Microsoft Sentinel will be automatically enabled on this workspace.",
         "constraints": {
           "required": true,
           "regex": "^[a-zA-Z0-9][a-zA-Z0-9-]{2,61}[a-zA-Z0-9]$",
