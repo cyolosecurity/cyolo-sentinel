@@ -65,7 +65,7 @@
     },
     "createNewWorkspace": {
       "type": "bool",
-      "defaultValue": false,
+      "defaultValue": true,
       "metadata": {
         "description": "Create a new Log Analytics workspace (if false, workspace must already exist)"
       }
