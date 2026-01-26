@@ -92,11 +92,27 @@ All log streams are enabled by default, but you can customize this during deploy
 
 ### Quick Deploy
 
-You can deploy the solution directly from the Azure Portal by clicking the button below:
+#### Enhanced Solution (Recommended)
+
+Deploy the enhanced solution with log stream selection and automatic workspace creation:
+
+**Manual Deployment:**
+1. Download `Solutions/CyoloSentinelSolution/Package/mainTemplate.json` from this repository
+2. Go to [Azure Portal Custom Deployment](https://portal.azure.com/#create/Microsoft.Template)
+3. Click "Build your own template in the editor"
+4. Paste the contents of the JSON file and click Save
+5. Fill in the parameters:
+   - Set `createNewWorkspace` to `true` for new deployments
+   - Select which log streams to enable
+   - Provide your Cyolo API credentials
+
+> **Note:** The Deploy to Azure button below uses the basic solution. For the enhanced solution with log stream selection, use the manual deployment method above.
+
+#### Basic Solution (Legacy)
 
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fcdn.jsdelivr.net%2Fgh%2Fcyolosecurity%2Fcyolo-sentinel%40main%2FSolutions%2FCyolo%2FCyoloSolution.json)
 
-> **Note:** If you encounter a CORS error with the deploy button, you can manually deploy by:
+> **Note:** This deploys the basic solution without log stream selection. If you encounter a CORS error:
 > 1. Download `Solutions/Cyolo/CyoloSolution.json` from this repository
 > 2. Go to [Azure Portal Custom Deployment](https://portal.azure.com/#create/Microsoft.Template)
 > 3. Click "Build your own template in the editor"
