@@ -62,6 +62,13 @@
       "metadata": {
         "description": "Enable ingestion of System logs from Cyolo"
       }
+    },
+    "createNewWorkspace": {
+      "type": "bool",
+      "defaultValue": false,
+      "metadata": {
+        "description": "Create a new Log Analytics workspace (if false, workspace must already exist)"
+      }
     }
   },
   "variables": {
@@ -80,11 +87,30 @@
   },
   "resources": [
     {
+      "condition": "[parameters('createNewWorkspace')]",
+      "type": "Microsoft.OperationalInsights/workspaces",
+      "apiVersion": "2022-10-01",
+      "name": "[parameters('workspace')]",
+      "location": "[parameters('workspace-location')]",
+      "properties": {
+        "sku": {
+          "name": "PerGB2018"
+        },
+        "retentionInDays": 90,
+        "features": {
+          "enableLogAccessUsingOnlyResourcePermissions": true
+        }
+      }
+    },
+    {
       "condition": "[parameters('enableAnalyticsLogs')]",
-      "name": "Custom-CyoloSentinelAnalyticsTable_CL",
+      "name": "[concat(parameters('workspace'), '/Custom-CyoloSentinelAnalyticsTable_CL')]",
       "apiVersion": "2022-10-01",
       "type": "Microsoft.OperationalInsights/workspaces/tables",
       "location": "[parameters('workspace-location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('workspace'))]"
+      ],
       "kind": null,
       "properties": {
         "schema": {
@@ -101,10 +127,13 @@
     },
     {
       "condition": "[parameters('enableAuditLogs')]",
-      "name": "Custom-CyoloSentinelAuditTable_CL",
+      "name": "[concat(parameters('workspace'), '/Custom-CyoloSentinelAuditTable_CL')]",
       "apiVersion": "2022-10-01",
       "type": "Microsoft.OperationalInsights/workspaces/tables",
       "location": "[parameters('workspace-location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('workspace'))]"
+      ],
       "kind": null,
       "properties": {
         "schema": {
@@ -121,10 +150,13 @@
     },
     {
       "condition": "[parameters('enableSystemLogs')]",
-      "name": "Custom-CyoloSentinelSystemTable_CL",
+      "name": "[concat(parameters('workspace'), '/Custom-CyoloSentinelSystemTable_CL')]",
       "apiVersion": "2022-10-01",
       "type": "Microsoft.OperationalInsights/workspaces/tables",
       "location": "[parameters('workspace-location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('workspace'))]"
+      ],
       "kind": null,
       "properties": {
         "schema": {

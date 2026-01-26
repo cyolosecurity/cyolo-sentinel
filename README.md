@@ -58,9 +58,11 @@ The solution can create the following custom tables in your Log Analytics worksp
 
 Before you start, you'll need:
 
-1. An Azure subscription with a Log Analytics workspace that has Sentinel enabled
-2. A Data Collection Endpoint (DCE) in the same region as your workspace
+1. An Azure subscription (the solution can create a new Log Analytics workspace or use an existing one)
+2. Microsoft Sentinel enabled on your workspace (if using existing workspace)
 3. Cyolo API credentials (Key ID and Secret) with log access permissions
+
+> **Note:** If you don't have an existing Log Analytics workspace, the solution can create one for you during deployment.
 
 To get API credentials from Cyolo:
 
@@ -102,12 +104,30 @@ You can deploy the solution directly from the Azure Portal by clicking the butto
 
 If you prefer to deploy step by step, here's the process.
 
-> **Note:** When using CLI deployment, you can control which log streams are enabled by adding these parameters:
+> **Note:** When using CLI deployment, you can customize the deployment with these parameters:
+> 
+> **Log Stream Selection:**
 > - `--parameters enableAnalyticsLogs=true enableAuditLogs=true enableSystemLogs=false`
 > 
-> This example would enable Analytics and Audit logs, but disable System logs.
+> **Workspace Options:**
+> - Use existing workspace: `--parameters createNewWorkspace=false workspace="existing-workspace-name"`
+> - Create new workspace: `--parameters createNewWorkspace=true workspace="new-workspace-name"`
 
-**1. Create the custom table**
+**1. Create or identify your Log Analytics workspace**
+
+If you need to create a new workspace:
+
+```bash
+az monitor log-analytics workspace create \
+  --resource-group <your-resource-group> \
+  --workspace-name <your-workspace> \
+  --location <region> \
+  --sku PerGB2018
+```
+
+Or use an existing workspace name for the next steps.
+
+**2. Create the custom table**
 
 ```bash
 az deployment group create \
@@ -116,7 +136,7 @@ az deployment group create \
   --parameters workspaceName="<your-workspace>"
 ```
 
-**2. Create a Data Collection Endpoint**
+**3. Create a Data Collection Endpoint**
 
 ```bash
 az monitor data-collection endpoint create \
@@ -126,7 +146,7 @@ az monitor data-collection endpoint create \
   --public-network-access Enabled
 ```
 
-**3. Create the Data Collection Rule**
+**4. Create the Data Collection Rule**
 
 ```bash
 az monitor data-collection rule create \
@@ -136,7 +156,7 @@ az monitor data-collection rule create \
   --rule-file Solutions/Cyolo/Data\ Connectors/DCR.json
 ```
 
-**4. Deploy the connector definition**
+**5. Deploy the connector definition**
 
 ```bash
 az deployment group create \
@@ -146,7 +166,7 @@ az deployment group create \
                workspace-location="<region>"
 ```
 
-**5. Deploy the data connector**
+**6. Deploy the data connector**
 
 ```bash
 az deployment group create \
