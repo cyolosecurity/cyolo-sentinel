@@ -89,6 +89,42 @@
               ]
             },
             "visible": true
+          },
+          {
+            "name": "logStreamsSection",
+            "type": "Microsoft.Common.Section",
+            "label": "Log Stream Selection",
+            "elements": [
+              {
+                "name": "logStreamsInfo",
+                "type": "Microsoft.Common.TextBlock",
+                "options": {
+                  "text": "Select which log streams you want to ingest from Cyolo. You can enable or disable individual log streams based on your monitoring requirements. Note: You can modify these settings later if needed."
+                }
+              },
+              {
+                "name": "enableAnalyticsLogs",
+                "type": "Microsoft.Common.CheckBox",
+                "label": "Enable Analytics Logs",
+                "toolTip": "Ingest behavioral analytics data from Cyolo. This includes user activity patterns, access trends, and usage analytics.",
+                "defaultValue": true
+              },
+              {
+                "name": "enableAuditLogs",
+                "type": "Microsoft.Common.CheckBox",
+                "label": "Enable Audit Logs",
+                "toolTip": "Ingest audit trail data from Cyolo. This includes administrative actions, configuration changes, and compliance events.",
+                "defaultValue": true
+              },
+              {
+                "name": "enableSystemLogs",
+                "type": "Microsoft.Common.CheckBox",
+                "label": "Enable System Logs",
+                "toolTip": "Ingest system health and operational events from Cyolo. This includes infrastructure status, performance metrics, and system diagnostics.",
+                "defaultValue": true
+              }
+            ],
+            "visible": true
           }
         ]
       }
@@ -96,7 +132,10 @@
     "outputs": {
       "workspace-location": "[first(map(filter(basics('getLAWorkspace').value, (filter) => and(contains(toLower(filter.id), toLower(resourceGroup().name)),equals(filter.name,basics('workspace')))), (item) => item.location))]",
       "workspace": "[basics('workspace')]",
-      "dataCollectionEndpointName": "[stepResult('dataconnectors', 'dataCollectionEndpointName')]"
+      "dataCollectionEndpointName": "[stepResult('dataconnectors', 'dataCollectionEndpointName')]",
+      "enableAnalyticsLogs": "[steps('dataconnectors').logStreamsSection.enableAnalyticsLogs]",
+      "enableAuditLogs": "[steps('dataconnectors').logStreamsSection.enableAuditLogs]",
+      "enableSystemLogs": "[steps('dataconnectors').logStreamsSection.enableSystemLogs]"
     }
   }
 }

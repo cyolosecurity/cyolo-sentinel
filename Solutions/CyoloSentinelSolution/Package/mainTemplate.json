@@ -41,6 +41,27 @@
       "metadata": {
         "description": "Subscription ID where Microsoft Sentinel is setup"
       }
+    },
+    "enableAnalyticsLogs": {
+      "type": "bool",
+      "defaultValue": true,
+      "metadata": {
+        "description": "Enable ingestion of Analytics logs from Cyolo"
+      }
+    },
+    "enableAuditLogs": {
+      "type": "bool",
+      "defaultValue": true,
+      "metadata": {
+        "description": "Enable ingestion of Audit logs from Cyolo"
+      }
+    },
+    "enableSystemLogs": {
+      "type": "bool",
+      "defaultValue": true,
+      "metadata": {
+        "description": "Enable ingestion of System logs from Cyolo"
+      }
     }
   },
   "variables": {
@@ -59,6 +80,7 @@
   },
   "resources": [
     {
+      "condition": "[parameters('enableAnalyticsLogs')]",
       "name": "Custom-CyoloSentinelAnalyticsTable_CL",
       "apiVersion": "2022-10-01",
       "type": "Microsoft.OperationalInsights/workspaces/tables",
@@ -78,6 +100,7 @@
       }
     },
     {
+      "condition": "[parameters('enableAuditLogs')]",
       "name": "Custom-CyoloSentinelAuditTable_CL",
       "apiVersion": "2022-10-01",
       "type": "Microsoft.OperationalInsights/workspaces/tables",
@@ -92,6 +115,27 @@
             { "name": "UserName", "type": "string", "description": "Name of the user who initiated the audit" },
             { "name": "Action", "type": "string", "description": "Action performed in the audit" },
             { "name": "Timestamp", "type": "datetime", "description": "Time when the audit occurred" }
+          ]
+        }
+      }
+    },
+    {
+      "condition": "[parameters('enableSystemLogs')]",
+      "name": "Custom-CyoloSentinelSystemTable_CL",
+      "apiVersion": "2022-10-01",
+      "type": "Microsoft.OperationalInsights/workspaces/tables",
+      "location": "[parameters('workspace-location')]",
+      "kind": null,
+      "properties": {
+        "schema": {
+          "name": "Custom-CyoloSentinelSystemTable_CL",
+          "columns": [
+            { "name": "TimeGenerated", "type": "datetime", "description": "The time when the record was generated" },
+            { "name": "SystemId", "type": "string", "description": "Unique identifier for the system event" },
+            { "name": "SystemTime", "type": "datetime", "description": "The time the system event occurred" },
+            { "name": "Severity", "type": "string", "description": "Severity level of the system event" },
+            { "name": "Component", "type": "string", "description": "System component that generated the event" },
+            { "name": "Message", "type": "string", "description": "System event message" }
           ]
         }
       }
@@ -137,6 +181,11 @@
                       "metricName": "Total Audit logs received",
                       "legend": "Cyolo Sentinel Audit Logs",
                       "baseQuery": "Custom-CyoloSentinelAuditTable_CL"
+                    },
+                    {
+                      "metricName": "Total System logs received",
+                      "legend": "Cyolo Sentinel System Logs",
+                      "baseQuery": "Custom-CyoloSentinelSystemTable_CL"
                     }
                   ],
                   "sampleQueries": [
@@ -147,6 +196,10 @@
                     {
                       "description": "Get Sample of Cyolo Audit logs",
                       "query": "Custom-CyoloSentinelAuditTable_CL | take 10"
+                    },
+                    {
+                      "description": "Get Sample of Cyolo System logs",
+                      "query": "Custom-CyoloSentinelSystemTable_CL | take 10"
                     }
                   ],
                   "dataTypes": [
@@ -157,6 +210,10 @@
                     {
                       "name": "Custom-CyoloSentinelAuditTable_CL",
                       "lastDataReceivedQuery": "Custom-CyoloSentinelAuditTable_CL\n       | where TimeGenerated > ago(12h)                | summarize Time = max(TimeGenerated)\n            | where isnotempty(Time)"
+                    },
+                    {
+                      "name": "Custom-CyoloSentinelSystemTable_CL",
+                      "lastDataReceivedQuery": "Custom-CyoloSentinelSystemTable_CL\n       | where TimeGenerated > ago(12h)                | summarize Time = max(TimeGenerated)\n            | where isnotempty(Time)"
                     }
                   ],
                   "connectivityCriteria": [
@@ -304,6 +361,15 @@
                       { "name": "action", "type": "string" },
                       { "name": "timestamp", "type": "long" }
                     ]
+                  },
+                  "Custom-CyoloSentinelSystemTable_CL": {
+                    "columns": [
+                      { "name": "system_id", "type": "string" },
+                      { "name": "system_time", "type": "long" },
+                      { "name": "severity", "type": "string" },
+                      { "name": "component", "type": "string" },
+                      { "name": "message", "type": "string" }
+                    ]
                   }
                 },
                 "destinations": {
@@ -326,6 +392,12 @@
                     "destinations": ["clv2ws1"],
                     "transformKql": "source | project TimeGenerated = now(), AuditId = audit_id, UserName = user_name, Action = action, Timestamp = datetime(1970-01-01) + (timestamp * 1ms)",
                     "outputStream": "Custom-CyoloSentinelAuditTable_CL"
+                  },
+                  {
+                    "streams": ["Custom-CyoloSentinelSystemTable_CL"],
+                    "destinations": ["clv2ws1"],
+                    "transformKql": "source | project TimeGenerated = now(), SystemId = system_id, SystemTime = datetime(1970-01-01) + (system_time * 1ms), Severity = severity, Component = component, Message = message",
+                    "outputStream": "Custom-CyoloSentinelSystemTable_CL"
                   }
                 ],
                 "dataCollectionEndpointId": "[concat('/subscriptions/',parameters('subscription'),'/resourceGroups/',parameters('resourceGroupName'),'/providers/Microsoft.Insights/dataCollectionEndpoints/',parameters('workspace'),'-DCE')]"
@@ -395,6 +467,18 @@
               "metadata": {
                 "description": "API Token from Cyolo IDAC"
               }
+            },
+            "enableAnalyticsLogs": {
+              "type": "bool",
+              "defaultValue": "[parameters('enableAnalyticsLogs')]"
+            },
+            "enableAuditLogs": {
+              "type": "bool",
+              "defaultValue": "[parameters('enableAuditLogs')]"
+            },
+            "enableSystemLogs": {
+              "type": "bool",
+              "defaultValue": "[parameters('enableSystemLogs')]"
             }
           },
           "variables": {
@@ -427,6 +511,7 @@
               }
             },
             {
+              "condition": "[parameters('enableAnalyticsLogs')]",
               "name": "[concat(parameters('workspace'),'/Microsoft.SecurityInsights/', 'CyoloAnalytics')]",
               "apiVersion": "2023-02-01-preview",
               "type": "Microsoft.OperationalInsights/workspaces/providers/dataConnectors",
@@ -441,7 +526,7 @@
                   "password": "[parameters('apiToken')]"
                 },
                 "request": {
-                  "apiEndpoint": "[concat(parameters('apiUrl'), '/analytics')]",
+                  "apiEndpoint": "[concat(parameters('apiUrl'), '/v1/analytics_log')]",
                   "headers": {
                     "Accept": "application/json",
                     "User-Agent": "Scuba"
@@ -451,7 +536,7 @@
                   "logResponseContent": true
                 },
                 "response": {
-                  "eventsJsonPaths": ["$.data"]
+                  "eventsJsonPaths": ["$.data[*]"]
                 },
                 "dcrConfig": {
                   "streamName": "Custom-CyoloSentinelAnalyticsTable_CL",
@@ -461,6 +546,7 @@
               }
             },
             {
+              "condition": "[parameters('enableAuditLogs')]",
               "name": "[concat(parameters('workspace'),'/Microsoft.SecurityInsights/', 'CyoloAudit')]",
               "apiVersion": "2023-02-01-preview",
               "type": "Microsoft.OperationalInsights/workspaces/providers/dataConnectors",
@@ -478,7 +564,7 @@
                   "password": "[parameters('apiToken')]"
                 },
                 "request": {
-                  "apiEndpoint": "[concat(parameters('apiUrl'), '/audit')]",
+                  "apiEndpoint": "[concat(parameters('apiUrl'), '/v1/audit_log')]",
                   "headers": {
                     "Accept": "application/json",
                     "User-Agent": "Scuba"
@@ -488,10 +574,48 @@
                   "logResponseContent": true
                 },
                 "response": {
-                  "eventsJsonPaths": ["$.data"]
+                  "eventsJsonPaths": ["$.data[*]"]
                 },
                 "dcrConfig": {
                   "streamName": "Custom-CyoloSentinelAuditTable_CL",
+                  "dataCollectionEndpoint": "[reference('CyoloActivity_DCR').properties.dataCollectionEndpointId]",
+                  "dataCollectionRuleImmutableId": "[reference('CyoloActivity_DCR').properties.immutableId]"
+                }
+              }
+            },
+            {
+              "condition": "[parameters('enableSystemLogs')]",
+              "name": "[concat(parameters('workspace'),'/Microsoft.SecurityInsights/', 'CyoloSystem')]",
+              "apiVersion": "2023-02-01-preview",
+              "type": "Microsoft.OperationalInsights/workspaces/providers/dataConnectors",
+              "location": "[parameters('workspace-location')]",
+              "kind": "RestApiPoller",
+              "dependsOn": [
+                "[resourceId('Microsoft.Insights/dataCollectionRules', 'CyoloActivity_DCR')]"
+              ],
+              "properties": {
+                "connectorDefinitionName": "CyoloDataConnector",
+                "dataType": "Custom-CyoloSentinelSystemTable_CL",
+                "auth": {
+                  "type": "Basic",
+                  "username": "[parameters('apiId')]",
+                  "password": "[parameters('apiToken')]"
+                },
+                "request": {
+                  "apiEndpoint": "[concat(parameters('apiUrl'), '/v1/system_log')]",
+                  "headers": {
+                    "Accept": "application/json",
+                    "User-Agent": "Scuba"
+                  },
+                  "httpMethod": "Get",
+                  "queryWindowInMin": 5,
+                  "logResponseContent": true
+                },
+                "response": {
+                  "eventsJsonPaths": ["$.data[*]"]
+                },
+                "dcrConfig": {
+                  "streamName": "Custom-CyoloSentinelSystemTable_CL",
                   "dataCollectionEndpoint": "[reference('CyoloActivity_DCR').properties.dataCollectionEndpointId]",
                   "dataCollectionRuleImmutableId": "[reference('CyoloActivity_DCR').properties.immutableId]"
                 }
