@@ -62,13 +62,6 @@
       "metadata": {
         "description": "Enable ingestion of System logs from Cyolo"
       }
-    },
-    "createNewWorkspace": {
-      "type": "bool",
-      "defaultValue": true,
-      "metadata": {
-        "description": "Create a new Log Analytics workspace (if false, workspace must already exist)"
-      }
     }
   },
   "variables": {
@@ -87,49 +80,11 @@
   },
   "resources": [
     {
-      "condition": "[parameters('createNewWorkspace')]",
-      "type": "Microsoft.OperationalInsights/workspaces",
-      "apiVersion": "2022-10-01",
-      "name": "[parameters('workspace')]",
-      "location": "[parameters('workspace-location')]",
-      "properties": {
-        "sku": {
-          "name": "PerGB2018"
-        },
-        "retentionInDays": 90,
-        "features": {
-          "enableLogAccessUsingOnlyResourcePermissions": true
-        }
-      }
-    },
-    {
-      "condition": "[parameters('createNewWorkspace')]",
-      "type": "Microsoft.OperationsManagement/solutions",
-      "apiVersion": "2015-11-01-preview",
-      "name": "[concat('SecurityInsights(', parameters('workspace'), ')')]",
-      "location": "[parameters('workspace-location')]",
-      "dependsOn": [
-        "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('workspace'))]"
-      ],
-      "properties": {
-        "workspaceResourceId": "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('workspace'))]"
-      },
-      "plan": {
-        "name": "[concat('SecurityInsights(', parameters('workspace'), ')')]",
-        "product": "OMSGallery/SecurityInsights",
-        "promotionCode": "",
-        "publisher": "Microsoft"
-      }
-    },
-    {
       "condition": "[parameters('enableAnalyticsLogs')]",
       "name": "[concat(parameters('workspace'), '/Custom-CyoloSentinelAnalyticsTable_CL')]",
       "apiVersion": "2022-10-01",
       "type": "Microsoft.OperationalInsights/workspaces/tables",
       "location": "[parameters('workspace-location')]",
-      "dependsOn": [
-        "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('workspace'))]"
-      ],
       "kind": null,
       "properties": {
         "schema": {
@@ -150,9 +105,6 @@
       "apiVersion": "2022-10-01",
       "type": "Microsoft.OperationalInsights/workspaces/tables",
       "location": "[parameters('workspace-location')]",
-      "dependsOn": [
-        "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('workspace'))]"
-      ],
       "kind": null,
       "properties": {
         "schema": {
@@ -173,9 +125,6 @@
       "apiVersion": "2022-10-01",
       "type": "Microsoft.OperationalInsights/workspaces/tables",
       "location": "[parameters('workspace-location')]",
-      "dependsOn": [
-        "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('workspace'))]"
-      ],
       "kind": null,
       "properties": {
         "schema": {
@@ -518,18 +467,6 @@
               "metadata": {
                 "description": "API Token from Cyolo IDAC"
               }
-            },
-            "enableAnalyticsLogs": {
-              "type": "bool",
-              "defaultValue": "[parameters('enableAnalyticsLogs')]"
-            },
-            "enableAuditLogs": {
-              "type": "bool",
-              "defaultValue": "[parameters('enableAuditLogs')]"
-            },
-            "enableSystemLogs": {
-              "type": "bool",
-              "defaultValue": "[parameters('enableSystemLogs')]"
             }
           },
           "variables": {

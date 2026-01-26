@@ -58,13 +58,30 @@ The solution can create the following custom tables in your Log Analytics worksp
 
 Before you start, you'll need:
 
-1. An Azure subscription (the solution can create a new Log Analytics workspace or use an existing one)
-2. Microsoft Sentinel enabled on your workspace (if using existing workspace)
+1. An Azure subscription
+2. **An existing Log Analytics workspace with Microsoft Sentinel enabled** (required)
 3. Cyolo API credentials (Key ID and Secret) with log access permissions
 
-> **Note:** 
-> - If you don't have an existing Log Analytics workspace, the solution will create one for you **and automatically enable Microsoft Sentinel** on it.
-> - If you're using an existing workspace, make sure Microsoft Sentinel is already enabled on it.
+> **Important:** You must create your Log Analytics workspace and enable Microsoft Sentinel on it **before** deploying this solution.
+
+### Creating a Workspace and Enabling Sentinel
+
+If you don't have a workspace yet:
+
+**Create Log Analytics Workspace:**
+```bash
+az monitor log-analytics workspace create \
+  --resource-group <your-resource-group> \
+  --workspace-name <your-workspace-name> \
+  --location <region> \
+  --sku PerGB2018
+```
+
+**Enable Microsoft Sentinel:**
+1. Go to Azure Portal > Search for "Microsoft Sentinel"
+2. Click "Add Microsoft Sentinel to a workspace"
+3. Select your workspace
+4. Click "Add"
 
 To get API credentials from Cyolo:
 
@@ -92,60 +109,55 @@ All log streams are enabled by default, but you can customize this during deploy
 
 ### Quick Deploy
 
-#### Enhanced Solution (Recommended)
+**Prerequisites:** You must have an existing Log Analytics workspace with Microsoft Sentinel enabled.
 
-Deploy the enhanced solution with log stream selection and automatic workspace creation:
-
-**Manual Deployment:**
+**Deploy the Enhanced Solution:**
 1. Download `Solutions/CyoloSentinelSolution/Package/mainTemplate.json` from this repository
 2. Go to [Azure Portal Custom Deployment](https://portal.azure.com/#create/Microsoft.Template)
 3. Click "Build your own template in the editor"
 4. Paste the contents of the JSON file and click Save
 5. Fill in the parameters:
-   - Set `createNewWorkspace` to `true` for new deployments
-   - Select which log streams to enable
-   - Provide your Cyolo API credentials
-
-> **Note:** The Deploy to Azure button below uses the basic solution. For the enhanced solution with log stream selection, use the manual deployment method above.
-
-#### Basic Solution (Legacy)
-
-[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fcdn.jsdelivr.net%2Fgh%2Fcyolosecurity%2Fcyolo-sentinel%40main%2FSolutions%2FCyolo%2FCyoloSolution.json)
-
-> **Note:** This deploys the basic solution without log stream selection. If you encounter a CORS error:
-> 1. Download `Solutions/Cyolo/CyoloSolution.json` from this repository
-> 2. Go to [Azure Portal Custom Deployment](https://portal.azure.com/#create/Microsoft.Template)
-> 3. Click "Build your own template in the editor"
-> 4. Paste the contents of the JSON file and click Save
+   - Select your existing workspace
+   - Choose which log streams to enable (Analytics, Audit, System)
+   - Provide your Cyolo API credentials (URL, Key ID, Token)
+6. Review and Create
 
 ### Manual Deployment via CLI
 
 If you prefer to deploy step by step, here's the process.
 
-> **Note:** When using CLI deployment, you can customize the deployment with these parameters:
-> 
-> **Log Stream Selection:**
-> - `--parameters enableAnalyticsLogs=true enableAuditLogs=true enableSystemLogs=false`
-> 
-> **Workspace Options:**
-> - Use existing workspace: `--parameters createNewWorkspace=false workspace="existing-workspace-name"`
-> - Create new workspace: `--parameters createNewWorkspace=true workspace="new-workspace-name"`
-
-**1. Create or identify your Log Analytics workspace**
-
-If you need to create a new workspace:
+**1. Create your Log Analytics workspace and enable Sentinel**
 
 ```bash
+# Create workspace
 az monitor log-analytics workspace create \
   --resource-group <your-resource-group> \
   --workspace-name <your-workspace> \
   --location <region> \
   --sku PerGB2018
+
+# Enable Sentinel (via Azure Portal or separate template)
 ```
 
-Or use an existing workspace name for the next steps.
+**2. Deploy the solution**
 
-**2. Create the custom table**
+```bash
+az deployment group create \
+  --resource-group <your-resource-group> \
+  --template-file Solutions/CyoloSentinelSolution/Package/mainTemplate.json \
+  --parameters \
+    workspace="<your-workspace>" \
+    workspace-location="<region>" \
+    enableAnalyticsLogs=true \
+    enableAuditLogs=true \
+    enableSystemLogs=true
+```
+
+### Legacy Step-by-Step Deployment
+
+If you need more control, you can deploy components individually:
+
+**1. Create the custom tables**
 
 ```bash
 az deployment group create \
@@ -154,7 +166,7 @@ az deployment group create \
   --parameters workspaceName="<your-workspace>"
 ```
 
-**3. Create a Data Collection Endpoint**
+**2. Create a Data Collection Endpoint**
 
 ```bash
 az monitor data-collection endpoint create \
@@ -164,7 +176,7 @@ az monitor data-collection endpoint create \
   --public-network-access Enabled
 ```
 
-**4. Create the Data Collection Rule**
+**3. Create the Data Collection Rule**
 
 ```bash
 az monitor data-collection rule create \
@@ -174,7 +186,7 @@ az monitor data-collection rule create \
   --rule-file Solutions/Cyolo/Data\ Connectors/DCR.json
 ```
 
-**5. Deploy the connector definition**
+**4. Deploy the connector definition**
 
 ```bash
 az deployment group create \
@@ -184,7 +196,7 @@ az deployment group create \
                workspace-location="<region>"
 ```
 
-**6. Deploy the data connector**
+**5. Deploy the data connector**
 
 ```bash
 az deployment group create \
