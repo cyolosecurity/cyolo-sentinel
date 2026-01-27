@@ -117,7 +117,22 @@ The **CyoloSentinelSolution** supports selective log stream ingestion. **Log str
 
 **Prerequisites:** You must have an existing Log Analytics workspace with Microsoft Sentinel enabled.
 
-**Deploy the Enhanced Solution:**
+**One-Click Deploy (Recommended):**
+
+Click the button below to deploy directly to Azure Portal with the full configuration UI:
+
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fcyolosecurity%2Fcyolo-sentinel%2Fmain%2FSolutions%2FCyoloSentinelSolution%2FPackage%2FmainTemplate.json/createUIDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2Fcyolosecurity%2Fcyolo-sentinel%2Fmain%2FSolutions%2FCyoloSentinelSolution%2FPackage%2FcreateUiDefinition.json)
+
+This will open Azure Portal with a guided deployment form where you can:
+- Select your existing workspace
+- Choose which log streams to enable with checkboxes
+- Provide your Cyolo API credentials
+
+---
+
+**Alternative: Manual Deploy**
+
+If the button doesn't work or you prefer manual deployment:
 
 1. **Download the template**
    - Get `Solutions/CyoloSentinelSolution/Package/mainTemplate.json` from this repository
