@@ -111,13 +111,13 @@
   "resources": [
     {
       "condition": "[parameters('enableAnalyticsLogs')]",
-      "name": "[concat(parameters('workspace'), '/Custom-CyoloSentinelAnalyticsTable_CL')]",
+      "name": "[concat(parameters('workspace'), '/CustomCyoloSentinelAnalyticsTable_CL')]",
       "apiVersion": "2022-10-01",
       "type": "Microsoft.OperationalInsights/workspaces/tables",
       "location": "[parameters('workspace-location')]",
       "properties": {
         "schema": {
-          "name": "Custom-CyoloSentinelAnalyticsTable_CL",
+          "name": "CustomCyoloSentinelAnalyticsTable_CL",
           "columns": [
             { "name": "TimeGenerated", "type": "datetime", "description": "The time when the record was generated" },
             { "name": "EventId", "type": "string", "description": "Unique identifier for the event" },
@@ -130,13 +130,13 @@
     },
     {
       "condition": "[parameters('enableAuditLogs')]",
-      "name": "[concat(parameters('workspace'), '/Custom-CyoloSentinelAuditTable_CL')]",
+      "name": "[concat(parameters('workspace'), '/CustomCyoloSentinelAuditTable_CL')]",
       "apiVersion": "2022-10-01",
       "type": "Microsoft.OperationalInsights/workspaces/tables",
       "location": "[parameters('workspace-location')]",
       "properties": {
         "schema": {
-          "name": "Custom-CyoloSentinelAuditTable_CL",
+          "name": "CustomCyoloSentinelAuditTable_CL",
           "columns": [
             { "name": "TimeGenerated", "type": "datetime", "description": "The time when the record was generated" },
             { "name": "AuditId", "type": "int", "description": "Unique identifier for the audit event" },
@@ -149,13 +149,13 @@
     },
     {
       "condition": "[parameters('enableSystemLogs')]",
-      "name": "[concat(parameters('workspace'), '/Custom-CyoloSentinelSystemTable_CL')]",
+      "name": "[concat(parameters('workspace'), '/CustomCyoloSentinelSystemTable_CL')]",
       "apiVersion": "2022-10-01",
       "type": "Microsoft.OperationalInsights/workspaces/tables",
       "location": "[parameters('workspace-location')]",
       "properties": {
         "schema": {
-          "name": "Custom-CyoloSentinelSystemTable_CL",
+          "name": "CustomCyoloSentinelSystemTable_CL",
           "columns": [
             { "name": "TimeGenerated", "type": "datetime", "description": "The time when the record was generated" },
             { "name": "SystemId", "type": "string", "description": "Unique identifier for the system event" },
@@ -184,11 +184,14 @@
       "type": "Microsoft.Insights/dataCollectionRules",
       "location": "[parameters('workspace-location')]",
       "dependsOn": [
-        "[resourceId('Microsoft.Insights/dataCollectionEndpoints', concat(parameters('workspace'), '-DCE'))]"
+        "[resourceId('Microsoft.Insights/dataCollectionEndpoints', concat(parameters('workspace'), '-DCE'))]",
+        "[resourceId('Microsoft.OperationalInsights/workspaces/tables', parameters('workspace'), 'CustomCyoloSentinelAnalyticsTable_CL')]",
+        "[resourceId('Microsoft.OperationalInsights/workspaces/tables', parameters('workspace'), 'CustomCyoloSentinelAuditTable_CL')]",
+        "[resourceId('Microsoft.OperationalInsights/workspaces/tables', parameters('workspace'), 'CustomCyoloSentinelSystemTable_CL')]"
       ],
       "properties": {
         "streamDeclarations": {
-          "Custom-CyoloSentinelAnalyticsTable_CL": {
+          "CustomCyoloSentinelAnalyticsTable_CL": {
             "columns": [
               { "name": "event_id", "type": "string" },
               { "name": "event_time", "type": "long" },
@@ -196,7 +199,7 @@
               { "name": "details", "type": "string" }
             ]
           },
-          "Custom-CyoloSentinelAuditTable_CL": {
+          "CustomCyoloSentinelAuditTable_CL": {
             "columns": [
               { "name": "audit_id", "type": "int" },
               { "name": "user_name", "type": "string" },
@@ -204,7 +207,7 @@
               { "name": "timestamp", "type": "long" }
             ]
           },
-          "Custom-CyoloSentinelSystemTable_CL": {
+          "CustomCyoloSentinelSystemTable_CL": {
             "columns": [
               { "name": "system_id", "type": "string" },
               { "name": "system_time", "type": "long" },
@@ -224,22 +227,22 @@
         },
         "dataFlows": [
           {
-            "streams": ["Custom-CyoloSentinelAnalyticsTable_CL"],
+            "streams": ["CustomCyoloSentinelAnalyticsTable_CL"],
             "destinations": ["clv2ws1"],
             "transformKql": "source | project TimeGenerated = now(), EventId = event_id, EventTime = datetime(1970-01-01) + (event_time * 1ms), EventType = event_type, Details = details",
-            "outputStream": "Custom-CyoloSentinelAnalyticsTable_CL"
+            "outputStream": "CustomCyoloSentinelAnalyticsTable_CL"
           },
           {
-            "streams": ["Custom-CyoloSentinelAuditTable_CL"],
+            "streams": ["CustomCyoloSentinelAuditTable_CL"],
             "destinations": ["clv2ws1"],
             "transformKql": "source | project TimeGenerated = now(), AuditId = audit_id, UserName = user_name, Action = action, Timestamp = datetime(1970-01-01) + (timestamp * 1ms)",
-            "outputStream": "Custom-CyoloSentinelAuditTable_CL"
+            "outputStream": "CustomCyoloSentinelAuditTable_CL"
           },
           {
-            "streams": ["Custom-CyoloSentinelSystemTable_CL"],
+            "streams": ["CustomCyoloSentinelSystemTable_CL"],
             "destinations": ["clv2ws1"],
             "transformKql": "source | project TimeGenerated = now(), SystemId = system_id, SystemTime = datetime(1970-01-01) + (system_time * 1ms), Severity = severity, Component = component, Message = message",
-            "outputStream": "Custom-CyoloSentinelSystemTable_CL"
+            "outputStream": "CustomCyoloSentinelSystemTable_CL"
           }
         ],
         "dataCollectionEndpointId": "[resourceId('Microsoft.Insights/dataCollectionEndpoints', concat(parameters('workspace'), '-DCE'))]"
@@ -280,45 +283,45 @@
                     {
                       "metricName": "Total Analytics logs received",
                       "legend": "Cyolo Sentinel Analytics Logs",
-                      "baseQuery": "Custom-CyoloSentinelAnalyticsTable_CL"
+                      "baseQuery": "CustomCyoloSentinelAnalyticsTable_CL"
                     },
                     {
                       "metricName": "Total Audit logs received",
                       "legend": "Cyolo Sentinel Audit Logs",
-                      "baseQuery": "Custom-CyoloSentinelAuditTable_CL"
+                      "baseQuery": "CustomCyoloSentinelAuditTable_CL"
                     },
                     {
                       "metricName": "Total System logs received",
                       "legend": "Cyolo Sentinel System Logs",
-                      "baseQuery": "Custom-CyoloSentinelSystemTable_CL"
+                      "baseQuery": "CustomCyoloSentinelSystemTable_CL"
                     }
                   ],
                   "sampleQueries": [
                     {
                       "description": "Get Sample of Cyolo Analytics logs",
-                      "query": "Custom-CyoloSentinelAnalyticsTable_CL | take 10"
+                      "query": "CustomCyoloSentinelAnalyticsTable_CL | take 10"
                     },
                     {
                       "description": "Get Sample of Cyolo Audit logs",
-                      "query": "Custom-CyoloSentinelAuditTable_CL | take 10"
+                      "query": "CustomCyoloSentinelAuditTable_CL | take 10"
                     },
                     {
                       "description": "Get Sample of Cyolo System logs",
-                      "query": "Custom-CyoloSentinelSystemTable_CL | take 10"
+                      "query": "CustomCyoloSentinelSystemTable_CL | take 10"
                     }
                   ],
                   "dataTypes": [
                     {
-                      "name": "Custom-CyoloSentinelAnalyticsTable_CL",
-                      "lastDataReceivedQuery": "Custom-CyoloSentinelAnalyticsTable_CL\n       | where TimeGenerated > ago(12h)                | summarize Time = max(TimeGenerated)\n            | where isnotempty(Time)"
+                      "name": "CustomCyoloSentinelAnalyticsTable_CL",
+                      "lastDataReceivedQuery": "CustomCyoloSentinelAnalyticsTable_CL\n       | where TimeGenerated > ago(12h)                | summarize Time = max(TimeGenerated)\n            | where isnotempty(Time)"
                     },
                     {
-                      "name": "Custom-CyoloSentinelAuditTable_CL",
-                      "lastDataReceivedQuery": "Custom-CyoloSentinelAuditTable_CL\n       | where TimeGenerated > ago(12h)                | summarize Time = max(TimeGenerated)\n            | where isnotempty(Time)"
+                      "name": "CustomCyoloSentinelAuditTable_CL",
+                      "lastDataReceivedQuery": "CustomCyoloSentinelAuditTable_CL\n       | where TimeGenerated > ago(12h)                | summarize Time = max(TimeGenerated)\n            | where isnotempty(Time)"
                     },
                     {
-                      "name": "Custom-CyoloSentinelSystemTable_CL",
-                      "lastDataReceivedQuery": "Custom-CyoloSentinelSystemTable_CL\n       | where TimeGenerated > ago(12h)                | summarize Time = max(TimeGenerated)\n            | where isnotempty(Time)"
+                      "name": "CustomCyoloSentinelSystemTable_CL",
+                      "lastDataReceivedQuery": "CustomCyoloSentinelSystemTable_CL\n       | where TimeGenerated > ago(12h)                | summarize Time = max(TimeGenerated)\n            | where isnotempty(Time)"
                     }
                   ],
                   "connectivityCriteria": [
@@ -549,7 +552,7 @@
               "kind": "RestApiPoller",
               "properties": {
                 "connectorDefinitionName": "CyoloDataConnector",
-                "dataType": "Custom-CyoloSentinelAnalyticsTable_CL",
+                "dataType": "CustomCyoloSentinelAnalyticsTable_CL",
                 "auth": {
                   "type": "Basic",
                   "username": "[parameters('apiId')]",
@@ -569,7 +572,7 @@
                   "eventsJsonPaths": ["$.data[*]"]
                 },
                 "dcrConfig": {
-                  "streamName": "Custom-CyoloSentinelAnalyticsTable_CL",
+                  "streamName": "CustomCyoloSentinelAnalyticsTable_CL",
                   "dataCollectionEndpoint": "[reference(resourceId('Microsoft.Insights/dataCollectionRules', 'CyoloActivity_DCR'), '2022-06-01').dataCollectionEndpointId]",
                   "dataCollectionRuleImmutableId": "[reference(resourceId('Microsoft.Insights/dataCollectionRules', 'CyoloActivity_DCR'), '2022-06-01').immutableId]"
                 }
@@ -584,7 +587,7 @@
               "kind": "RestApiPoller",
               "properties": {
                 "connectorDefinitionName": "CyoloDataConnector",
-                "dataType": "Custom-CyoloSentinelAuditTable_CL",
+                "dataType": "CustomCyoloSentinelAuditTable_CL",
                 "auth": {
                   "type": "Basic",
                   "username": "[parameters('apiId')]",
@@ -604,7 +607,7 @@
                   "eventsJsonPaths": ["$.data[*]"]
                 },
                 "dcrConfig": {
-                  "streamName": "Custom-CyoloSentinelAuditTable_CL",
+                  "streamName": "CustomCyoloSentinelAuditTable_CL",
                   "dataCollectionEndpoint": "[reference(resourceId('Microsoft.Insights/dataCollectionRules', 'CyoloActivity_DCR'), '2022-06-01').dataCollectionEndpointId]",
                   "dataCollectionRuleImmutableId": "[reference(resourceId('Microsoft.Insights/dataCollectionRules', 'CyoloActivity_DCR'), '2022-06-01').immutableId]"
                 }
@@ -619,7 +622,7 @@
               "kind": "RestApiPoller",
               "properties": {
                 "connectorDefinitionName": "CyoloDataConnector",
-                "dataType": "Custom-CyoloSentinelSystemTable_CL",
+                "dataType": "CustomCyoloSentinelSystemTable_CL",
                 "auth": {
                   "type": "Basic",
                   "username": "[parameters('apiId')]",
@@ -639,7 +642,7 @@
                   "eventsJsonPaths": ["$.data[*]"]
                 },
                 "dcrConfig": {
-                  "streamName": "Custom-CyoloSentinelSystemTable_CL",
+                  "streamName": "CustomCyoloSentinelSystemTable_CL",
                   "dataCollectionEndpoint": "[reference(resourceId('Microsoft.Insights/dataCollectionRules', 'CyoloActivity_DCR'), '2022-06-01').dataCollectionEndpointId]",
                   "dataCollectionRuleImmutableId": "[reference(resourceId('Microsoft.Insights/dataCollectionRules', 'CyoloActivity_DCR'), '2022-06-01').immutableId]"
                 }
