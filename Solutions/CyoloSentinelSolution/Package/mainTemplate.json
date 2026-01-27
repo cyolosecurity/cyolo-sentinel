@@ -18,14 +18,14 @@
       "type": "string",
       "defaultValue": "[resourceGroup().location]",
       "metadata": {
-        "description": "Region to deploy solution resources -- separate from location selection"
+        "description": "📍 Workspace Region - The Azure region where your Log Analytics workspace is located"
       }
     },
     "workspace": {
       "defaultValue": "",
       "type": "string",
       "metadata": {
-        "description": "Workspace name for Log Analytics where Microsoft Sentinel is setup"
+        "description": "📋 Workspace Name - Your existing Log Analytics workspace name (Microsoft Sentinel must be enabled on it)"
       }
     },
     "resourceGroupName": {
@@ -45,22 +45,34 @@
     "enableAnalyticsLogs": {
       "type": "bool",
       "defaultValue": true,
+      "allowedValues": [
+        true,
+        false
+      ],
       "metadata": {
-        "description": "Enable ingestion of Analytics logs from Cyolo"
+        "description": "✅ Enable Analytics Logs - Behavioral analytics, user activity patterns, and access trends"
       }
     },
     "enableAuditLogs": {
       "type": "bool",
       "defaultValue": true,
+      "allowedValues": [
+        true,
+        false
+      ],
       "metadata": {
-        "description": "Enable ingestion of Audit logs from Cyolo"
+        "description": "✅ Enable Audit Logs - Administrative actions, configuration changes, and compliance events"
       }
     },
     "enableSystemLogs": {
       "type": "bool",
       "defaultValue": true,
+      "allowedValues": [
+        true,
+        false
+      ],
       "metadata": {
-        "description": "Enable ingestion of System logs from Cyolo"
+        "description": "✅ Enable System Logs - System health, performance metrics, and operational diagnostics"
       }
     }
   },

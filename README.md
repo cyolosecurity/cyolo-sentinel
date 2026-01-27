@@ -94,33 +94,82 @@ To get API credentials from Cyolo:
 
 ### Selecting Log Streams
 
-The **CyoloSentinelSolution** supports selective log stream ingestion. During deployment, you can choose which log types to enable:
+The **CyoloSentinelSolution** supports selective log stream ingestion. **Log stream selection happens during ARM template deployment**, not in the Sentinel UI.
 
+**Available Log Streams:**
 - **Analytics Logs** - Behavioral analytics, user activity patterns, and access trends
 - **Audit Logs** - Administrative actions, configuration changes, and compliance events  
 - **System Logs** - System health, performance metrics, and operational diagnostics
 
-This allows you to:
+**Benefits:**
 - **Reduce costs** by ingesting only the logs you need
 - **Focus monitoring** on specific security areas
 - **Optimize performance** with smaller data volumes
 
-All log streams are enabled by default, but you can customize this during deployment using the checkboxes in the Azure Portal UI.
+**How It Works:**
+- During deployment, you set boolean parameters (`enableAnalyticsLogs`, `enableAuditLogs`, `enableSystemLogs`) to `true` or `false`
+- Each enabled log stream creates a separate data connector and custom table in Sentinel
+- After deployment, you configure API credentials for each enabled connector in the Sentinel UI
+
+> 📖 **For detailed guidance on log stream selection, see [LOG_STREAM_SELECTION_GUIDE.md](LOG_STREAM_SELECTION_GUIDE.md)**
 
 ### Quick Deploy
 
 **Prerequisites:** You must have an existing Log Analytics workspace with Microsoft Sentinel enabled.
 
 **Deploy the Enhanced Solution:**
-1. Download `Solutions/CyoloSentinelSolution/Package/mainTemplate.json` from this repository
-2. Go to [Azure Portal Custom Deployment](https://portal.azure.com/#create/Microsoft.Template)
-3. Click "Build your own template in the editor"
-4. Paste the contents of the JSON file and click Save
-5. Fill in the parameters:
-   - Select your existing workspace
-   - Choose which log streams to enable (Analytics, Audit, System)
-   - Provide your Cyolo API credentials (URL, Key ID, Token)
-6. Review and Create
+
+1. **Download the template**
+   - Get `Solutions/CyoloSentinelSolution/Package/mainTemplate.json` from this repository
+
+2. **Go to Azure Portal Custom Deployment**
+   - Navigate to: https://portal.azure.com/#create/Microsoft.Template
+   - Click **"Build your own template in the editor"**
+   - Paste the contents of mainTemplate.json
+   - Click **"Save"**
+
+3. **Fill in Basic Settings**
+   - **Subscription**: Your Azure subscription
+   - **Resource group**: The resource group containing your Sentinel workspace
+   - **Region**: Your Azure region
+   - **Workspace**: Your existing Log Analytics workspace name
+   - **Workspace Location**: Same region as your workspace
+
+4. **🎯 Select Log Streams (Deployment-Time Configuration)**
+   
+   In the deployment form, you'll see these boolean parameters - set each to `true` or `false`:
+   
+   - **Enable Analytics Logs**: 
+     - `true` = Creates CyoloSentinelAnalyticsTable_CL and connector for behavioral analytics
+     - `false` = Skip Analytics logs
+   
+   - **Enable Audit Logs**: 
+     - `true` = Creates CyoloSentinelAuditTable_CL and connector for admin/config changes
+     - `false` = Skip Audit logs
+   
+   - **Enable System Logs**: 
+     - `true` = Creates CyoloSentinelSystemTable_CL and connector for system health
+     - `false` = Skip System logs
+   
+   > **Important**: These selections happen **during deployment**. Each enabled log stream creates a separate data connector in Sentinel. To change later, you must redeploy.
+
+5. **Provide Cyolo API Credentials**
+   - **Api Url**: `https://console.YOUR-TENANT.cyolo.io`
+   - **Api Id**: Your Cyolo API Key ID
+   - **Api Token**: Your Cyolo API Secret Token
+
+6. **Review and Create**
+   - Click **"Review + create"**
+   - Review all parameters
+   - Click **"Create"**
+
+**After Deployment:**
+- Go to Microsoft Sentinel → Data connectors
+- You'll see separate connectors for each enabled log stream:
+  - CyoloAnalytics (if enabled)
+  - CyoloAudit (if enabled)
+  - CyoloSystem (if enabled)
+- Each connector will have its configuration page where you verify API settings
 
 ### Manual Deployment via CLI
 
