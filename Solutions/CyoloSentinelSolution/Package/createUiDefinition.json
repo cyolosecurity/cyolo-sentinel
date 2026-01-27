@@ -59,6 +59,59 @@
             }
           },
           {
+            "name": "cyoloApiSection",
+            "type": "Microsoft.Common.Section",
+            "label": "Cyolo API Configuration",
+            "elements": [
+              {
+                "name": "cyoloApiInfo",
+                "type": "Microsoft.Common.TextBlock",
+                "options": {
+                  "text": "Enter your Cyolo API credentials. You can obtain these from your Cyolo console: Settings > API > API Keys."
+                }
+              },
+              {
+                "name": "apiUrl",
+                "type": "Microsoft.Common.TextBox",
+                "label": "Cyolo API URL",
+                "defaultValue": "",
+                "toolTip": "Base API URL from your Cyolo console (e.g., https://console.your-tenant.cyolo.io)",
+                "placeholder": "https://console.your-tenant.cyolo.io",
+                "constraints": {
+                  "required": true,
+                  "regex": "^https://.*",
+                  "validationMessage": "API URL must start with https://"
+                }
+              },
+              {
+                "name": "apiId",
+                "type": "Microsoft.Common.TextBox",
+                "label": "Cyolo API Key ID",
+                "defaultValue": "",
+                "toolTip": "Your Cyolo API Key ID from Settings > API Keys",
+                "placeholder": "Enter API Key ID",
+                "constraints": {
+                  "required": true
+                }
+              },
+              {
+                "name": "apiToken",
+                "type": "Microsoft.Common.PasswordBox",
+                "label": {
+                  "password": "Cyolo API Token"
+                },
+                "toolTip": "Your Cyolo API Secret Token from Settings > API Keys",
+                "constraints": {
+                  "required": true
+                },
+                "options": {
+                  "hideConfirmation": true
+                }
+              }
+            ],
+            "visible": true
+          },
+          {
             "name": "logStreamsSection",
             "type": "Microsoft.Common.Section",
             "label": "Log Stream Selection",
@@ -100,6 +153,9 @@
     "outputs": {
       "workspace-location": "[first(map(filter(basics('getLAWorkspace').value, (filter) => and(contains(toLower(filter.id), toLower(resourceGroup().name)),equals(filter.name,basics('workspace')))), (item) => item.location))]",
       "workspace": "[basics('workspace')]",
+      "apiUrl": "[steps('dataconnectors').cyoloApiSection.apiUrl]",
+      "apiId": "[steps('dataconnectors').cyoloApiSection.apiId]",
+      "apiToken": "[steps('dataconnectors').cyoloApiSection.apiToken]",
       "enableAnalyticsLogs": "[steps('dataconnectors').logStreamsSection.enableAnalyticsLogs]",
       "enableAuditLogs": "[steps('dataconnectors').logStreamsSection.enableAuditLogs]",
       "enableSystemLogs": "[steps('dataconnectors').logStreamsSection.enableSystemLogs]"

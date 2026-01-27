@@ -74,6 +74,24 @@
       "metadata": {
         "description": "✅ Enable System Logs - System health, performance metrics, and operational diagnostics"
       }
+    },
+    "apiUrl": {
+      "type": "secureString",
+      "metadata": {
+        "description": "🔗 Cyolo API URL - Base API URL from your Cyolo console (e.g., https://console.your-tenant.cyolo.io)"
+      }
+    },
+    "apiId": {
+      "type": "secureString",
+      "metadata": {
+        "description": "🔑 Cyolo API Key ID - Your Cyolo API Key ID from Settings > API Keys"
+      }
+    },
+    "apiToken": {
+      "type": "secureString",
+      "metadata": {
+        "description": "🔐 Cyolo API Token - Your Cyolo API Secret Token from Settings > API Keys"
+      }
     }
   },
   "variables": {
@@ -469,6 +487,7 @@
               "type": "object"
             },
             "apiUrl": {
+              "defaultValue": "[parameters('apiUrl')]",
               "type": "secureString",
               "minLength": 1,
               "metadata": {
@@ -476,6 +495,7 @@
               }
             },
             "apiId": {
+              "defaultValue": "[parameters('apiId')]",
               "type": "secureString",
               "minLength": 1,
               "metadata": {
@@ -483,6 +503,7 @@
               }
             },
             "apiToken": {
+              "defaultValue": "[parameters('apiToken')]",
               "type": "secureString",
               "minLength": 1,
               "metadata": {
