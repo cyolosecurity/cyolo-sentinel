@@ -164,6 +164,74 @@
       }
     },
     {
+      "name": "CyoloActivity_DCR",
+      "apiVersion": "2022-06-01",
+      "type": "Microsoft.Insights/dataCollectionRules",
+      "location": "[parameters('workspace-location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Insights/dataCollectionEndpoints', concat(parameters('workspace'), '-DCE'))]"
+      ],
+      "kind": "[variables('blanks')]",
+      "properties": {
+        "streamDeclarations": {
+          "Custom-CyoloSentinelAnalyticsTable_CL": {
+            "columns": [
+              { "name": "event_id", "type": "string" },
+              { "name": "event_time", "type": "long" },
+              { "name": "event_type", "type": "string" },
+              { "name": "details", "type": "string" }
+            ]
+          },
+          "Custom-CyoloSentinelAuditTable_CL": {
+            "columns": [
+              { "name": "audit_id", "type": "int" },
+              { "name": "user_name", "type": "string" },
+              { "name": "action", "type": "string" },
+              { "name": "timestamp", "type": "long" }
+            ]
+          },
+          "Custom-CyoloSentinelSystemTable_CL": {
+            "columns": [
+              { "name": "system_id", "type": "string" },
+              { "name": "system_time", "type": "long" },
+              { "name": "severity", "type": "string" },
+              { "name": "component", "type": "string" },
+              { "name": "message", "type": "string" }
+            ]
+          }
+        },
+        "destinations": {
+          "logAnalytics": [
+            {
+              "workspaceResourceId": "[variables('workspaceResourceId')]",
+              "name": "clv2ws1"
+            }
+          ]
+        },
+        "dataFlows": [
+          {
+            "streams": ["Custom-CyoloSentinelAnalyticsTable_CL"],
+            "destinations": ["clv2ws1"],
+            "transformKql": "source | project TimeGenerated = now(), EventId = event_id, EventTime = datetime(1970-01-01) + (event_time * 1ms), EventType = event_type, Details = details",
+            "outputStream": "Custom-CyoloSentinelAnalyticsTable_CL"
+          },
+          {
+            "streams": ["Custom-CyoloSentinelAuditTable_CL"],
+            "destinations": ["clv2ws1"],
+            "transformKql": "source | project TimeGenerated = now(), AuditId = audit_id, UserName = user_name, Action = action, Timestamp = datetime(1970-01-01) + (timestamp * 1ms)",
+            "outputStream": "Custom-CyoloSentinelAuditTable_CL"
+          },
+          {
+            "streams": ["Custom-CyoloSentinelSystemTable_CL"],
+            "destinations": ["clv2ws1"],
+            "transformKql": "source | project TimeGenerated = now(), SystemId = system_id, SystemTime = datetime(1970-01-01) + (system_time * 1ms), Severity = severity, Component = component, Message = message",
+            "outputStream": "Custom-CyoloSentinelSystemTable_CL"
+          }
+        ],
+        "dataCollectionEndpointId": "[resourceId('Microsoft.Insights/dataCollectionEndpoints', concat(parameters('workspace'), '-DCE'))]"
+      }
+    },
+    {
       "type": "Microsoft.OperationalInsights/workspaces/providers/contentTemplates",
       "apiVersion": "2023-04-01-preview",
       "name": "[concat(parameters('workspace'),'/Microsoft.SecurityInsights/', variables('dataConnectorTemplateNameConnectorDefinition1'), variables('dataConnectorCCPVersion'))]",
@@ -361,71 +429,6 @@
                   ]
                 }
               }
-            },
-            {
-              "name": "CyoloActivity_DCR",
-              "apiVersion": "2022-06-01",
-              "type": "Microsoft.Insights/dataCollectionRules",
-              "location": "[parameters('workspace-location')]",
-              "kind": "[variables('blanks')]",
-              "properties": {
-                "streamDeclarations": {
-                  "Custom-CyoloSentinelAnalyticsTable_CL": {
-                    "columns": [
-                      { "name": "event_id", "type": "string" },
-                      { "name": "event_time", "type": "long" },
-                      { "name": "event_type", "type": "string" },
-                      { "name": "details", "type": "string" }
-                    ]
-                  },
-                  "Custom-CyoloSentinelAuditTable_CL": {
-                    "columns": [
-                      { "name": "audit_id", "type": "int" },
-                      { "name": "user_name", "type": "string" },
-                      { "name": "action", "type": "string" },
-                      { "name": "timestamp", "type": "long" }
-                    ]
-                  },
-                  "Custom-CyoloSentinelSystemTable_CL": {
-                    "columns": [
-                      { "name": "system_id", "type": "string" },
-                      { "name": "system_time", "type": "long" },
-                      { "name": "severity", "type": "string" },
-                      { "name": "component", "type": "string" },
-                      { "name": "message", "type": "string" }
-                    ]
-                  }
-                },
-                "destinations": {
-                  "logAnalytics": [
-                    {
-                      "workspaceResourceId": "[variables('workspaceResourceId')]",
-                      "name": "clv2ws1"
-                    }
-                  ]
-                },
-                "dataFlows": [
-                  {
-                    "streams": ["Custom-CyoloSentinelAnalyticsTable_CL"],
-                    "destinations": ["clv2ws1"],
-                    "transformKql": "source | project TimeGenerated = now(), EventId = event_id, EventTime = datetime(1970-01-01) + (event_time * 1ms), EventType = event_type, Details = details",
-                    "outputStream": "Custom-CyoloSentinelAnalyticsTable_CL"
-                  },
-                  {
-                    "streams": ["Custom-CyoloSentinelAuditTable_CL"],
-                    "destinations": ["clv2ws1"],
-                    "transformKql": "source | project TimeGenerated = now(), AuditId = audit_id, UserName = user_name, Action = action, Timestamp = datetime(1970-01-01) + (timestamp * 1ms)",
-                    "outputStream": "Custom-CyoloSentinelAuditTable_CL"
-                  },
-                  {
-                    "streams": ["Custom-CyoloSentinelSystemTable_CL"],
-                    "destinations": ["clv2ws1"],
-                    "transformKql": "source | project TimeGenerated = now(), SystemId = system_id, SystemTime = datetime(1970-01-01) + (system_time * 1ms), Severity = severity, Component = component, Message = message",
-                    "outputStream": "Custom-CyoloSentinelSystemTable_CL"
-                  }
-                ],
-                "dataCollectionEndpointId": "[concat('/subscriptions/',parameters('subscription'),'/resourceGroups/',parameters('resourceGroupName'),'/providers/Microsoft.Insights/dataCollectionEndpoints/',parameters('workspace'),'-DCE')]"
-              }
             }
           ]
         },
@@ -552,8 +555,8 @@
                 },
                 "dcrConfig": {
                   "streamName": "Custom-CyoloSentinelAnalyticsTable_CL",
-                  "dataCollectionEndpoint": "[reference('CyoloActivity_DCR').properties.dataCollectionEndpointId]",
-                  "dataCollectionRuleImmutableId": "[reference('CyoloActivity_DCR').properties.immutableId]"
+                  "dataCollectionEndpoint": "[reference(resourceId('Microsoft.Insights/dataCollectionRules', 'CyoloActivity_DCR'), '2022-06-01').dataCollectionEndpointId]",
+                  "dataCollectionRuleImmutableId": "[reference(resourceId('Microsoft.Insights/dataCollectionRules', 'CyoloActivity_DCR'), '2022-06-01').immutableId]"
                 }
               }
             },
@@ -564,9 +567,6 @@
               "type": "Microsoft.OperationalInsights/workspaces/providers/dataConnectors",
               "location": "[parameters('workspace-location')]",
               "kind": "RestApiPoller",
-              "dependsOn": [
-                "[resourceId('Microsoft.Insights/dataCollectionRules', 'CyoloActivity_DCR')]"
-              ],
               "properties": {
                 "connectorDefinitionName": "CyoloDataConnector",
                 "dataType": "Custom-CyoloSentinelAuditTable_CL",
@@ -590,8 +590,8 @@
                 },
                 "dcrConfig": {
                   "streamName": "Custom-CyoloSentinelAuditTable_CL",
-                  "dataCollectionEndpoint": "[reference('CyoloActivity_DCR').properties.dataCollectionEndpointId]",
-                  "dataCollectionRuleImmutableId": "[reference('CyoloActivity_DCR').properties.immutableId]"
+                  "dataCollectionEndpoint": "[reference(resourceId('Microsoft.Insights/dataCollectionRules', 'CyoloActivity_DCR'), '2022-06-01').dataCollectionEndpointId]",
+                  "dataCollectionRuleImmutableId": "[reference(resourceId('Microsoft.Insights/dataCollectionRules', 'CyoloActivity_DCR'), '2022-06-01').immutableId]"
                 }
               }
             },
@@ -602,9 +602,6 @@
               "type": "Microsoft.OperationalInsights/workspaces/providers/dataConnectors",
               "location": "[parameters('workspace-location')]",
               "kind": "RestApiPoller",
-              "dependsOn": [
-                "[resourceId('Microsoft.Insights/dataCollectionRules', 'CyoloActivity_DCR')]"
-              ],
               "properties": {
                 "connectorDefinitionName": "CyoloDataConnector",
                 "dataType": "Custom-CyoloSentinelSystemTable_CL",
@@ -628,8 +625,8 @@
                 },
                 "dcrConfig": {
                   "streamName": "Custom-CyoloSentinelSystemTable_CL",
-                  "dataCollectionEndpoint": "[reference('CyoloActivity_DCR').properties.dataCollectionEndpointId]",
-                  "dataCollectionRuleImmutableId": "[reference('CyoloActivity_DCR').properties.immutableId]"
+                  "dataCollectionEndpoint": "[reference(resourceId('Microsoft.Insights/dataCollectionRules', 'CyoloActivity_DCR'), '2022-06-01').dataCollectionEndpointId]",
+                  "dataCollectionRuleImmutableId": "[reference(resourceId('Microsoft.Insights/dataCollectionRules', 'CyoloActivity_DCR'), '2022-06-01').immutableId]"
                 }
               }
             }
