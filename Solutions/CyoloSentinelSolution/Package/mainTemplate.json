@@ -232,6 +232,40 @@
       }
     },
     {
+      "type": "Microsoft.OperationalInsights/workspaces/providers/contentPackages",
+      "apiVersion": "2023-04-01-preview",
+      "name": "[concat(parameters('workspace'), '/Microsoft.SecurityInsights/', variables('_solutioncontentProductId'))]",
+      "location": "[parameters('workspace-location')]",
+      "properties": {
+        "version": "[variables('_solutionVersion')]",
+        "kind": "Solution",
+        "contentSchemaVersion": "3.0.0",
+        "displayName": "Cyolo Sentinel CCP",
+        "publisherDisplayName": "Cyolo Security",
+        "descriptionHtml": "<p><strong>Note:</strong> Please refer to the solution documentation before installing.</p>\\n<p>The <a href=\"https://docs.cyolo.com\">Cyolo Sentinel Solution</a> data connector allows ingesting logs from the Cyolo IDAC API into Microsoft Sentinel. It uses the Cyolo IDAC API to fetch analytics and audit logs and supports DCR-based ingestion time transformations.</p>\\n<p><strong>Data Connectors:</strong> 2</p>\\n<p><a href=\"https://aka.ms/azuresentinel\">Learn more about Microsoft Sentinel</a></p>",
+        "contentKind": "Solution",
+        "contentProductId": "[variables('_solutioncontentProductId')]",
+        "id": "[variables('_solutioncontentProductId')]",
+        "icon": "<img src=\"https://raw.githubusercontent.com/Cyolo.io/Cyolo-Sentinel/master/Logos/Cyolo_Logo.svg\" width=\"75px\" height=\"75px\">",
+        "contentId": "[variables('_solutionId')]",
+        "parentId": "[variables('_solutionId')]",
+        "source": {
+          "kind": "Solution",
+          "name": "Cyolo Sentinel CCP",
+          "sourceId": "[variables('_solutionId')]"
+        },
+        "author": {
+          "name": "Cyolo.io"
+        },
+        "support": {
+          "name": "Microsoft Corporation",
+          "email": "support@microsoft.com",
+          "tier": "Microsoft",
+          "link": "https://support.microsoft.com"
+        }
+      }
+    },
+    {
       "type": "Microsoft.OperationalInsights/workspaces/providers/contentTemplates",
       "apiVersion": "2023-04-01-preview",
       "name": "[concat(parameters('workspace'),'/Microsoft.SecurityInsights/', variables('dataConnectorTemplateNameConnectorDefinition1'), variables('dataConnectorCCPVersion'))]",
@@ -639,40 +673,6 @@
         "packageId": "[variables('_solutionId')]",
         "contentSchemaVersion": "3.0.0",
         "version": "[variables('dataConnectorCCPVersion')]"
-      }
-    },
-    {
-      "type": "Microsoft.OperationalInsights/workspaces/providers/contentPackages",
-      "apiVersion": "2023-04-01-preview",
-      "name": "[concat(parameters('workspace'), '/Microsoft.SecurityInsights/', variables('_solutioncontentProductId'))]",
-      "location": "[parameters('workspace-location')]",
-      "properties": {
-        "version": "[variables('_solutionVersion')]",
-        "kind": "Solution",
-        "contentSchemaVersion": "3.0.0",
-        "displayName": "Cyolo Sentinel CCP",
-        "publisherDisplayName": "Cyolo Security",
-        "descriptionHtml": "<p><strong>Note:</strong> Please refer to the solution documentation before installing.</p>\\n<p>The <a href=\"https://docs.cyolo.com\">Cyolo Sentinel Solution</a> data connector allows ingesting logs from the Cyolo IDAC API into Microsoft Sentinel. It uses the Cyolo IDAC API to fetch analytics and audit logs and supports DCR-based ingestion time transformations.</p>\\n<p><strong>Data Connectors:</strong> 2</p>\\n<p><a href=\"https://aka.ms/azuresentinel\">Learn more about Microsoft Sentinel</a></p>",
-        "contentKind": "Solution",
-        "contentProductId": "[variables('_solutioncontentProductId')]",
-        "id": "[variables('_solutioncontentProductId')]",
-        "icon": "<img src=\"https://raw.githubusercontent.com/Cyolo.io/Cyolo-Sentinel/master/Logos/Cyolo_Logo.svg\" width=\"75px\" height=\"75px\">",
-        "contentId": "[variables('_solutionId')]",
-        "parentId": "[variables('_solutionId')]",
-        "source": {
-          "kind": "Solution",
-          "name": "Cyolo Sentinel CCP",
-          "sourceId": "[variables('_solutionId')]"
-        },
-        "author": {
-          "name": "Cyolo.io"
-        },
-        "support": {
-          "name": "Microsoft Corporation",
-          "email": "support@microsoft.com",
-          "tier": "Microsoft",
-          "link": "https://support.microsoft.com"
-        }
       }
     }
   ]
