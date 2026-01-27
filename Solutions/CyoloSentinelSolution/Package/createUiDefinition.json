@@ -59,23 +59,6 @@
             }
           },
           {
-            "name": "dataCollectionEndpointName",
-            "type": "Microsoft.Common.TextBox",
-            "label": "Data Collection Endpoint Name",
-            "defaultValue": "CyoloDCE",
-            "toolTip": "Enter a unique name for the Data Collection Endpoint",
-            "constraints": {
-              "required": true,
-              "validations": [
-                {
-                  "regex": "^[a-zA-Z0-9][a-zA-Z0-9-]{2,61}[a-zA-Z0-9]$",
-                  "message": "Name must be 3-63 characters long and contain only letters, numbers, and hyphens."
-                }
-              ]
-            },
-            "visible": true
-          },
-          {
             "name": "logStreamsSection",
             "type": "Microsoft.Common.Section",
             "label": "Log Stream Selection",
@@ -117,7 +100,6 @@
     "outputs": {
       "workspace-location": "[first(map(filter(basics('getLAWorkspace').value, (filter) => and(contains(toLower(filter.id), toLower(resourceGroup().name)),equals(filter.name,basics('workspace')))), (item) => item.location))]",
       "workspace": "[basics('workspace')]",
-      "dataCollectionEndpointName": "[stepResult('dataconnectors', 'dataCollectionEndpointName')]",
       "enableAnalyticsLogs": "[steps('dataconnectors').logStreamsSection.enableAnalyticsLogs]",
       "enableAuditLogs": "[steps('dataconnectors').logStreamsSection.enableAuditLogs]",
       "enableSystemLogs": "[steps('dataconnectors').logStreamsSection.enableSystemLogs]"
