@@ -171,7 +171,6 @@
       "dependsOn": [
         "[resourceId('Microsoft.Insights/dataCollectionEndpoints', concat(parameters('workspace'), '-DCE'))]"
       ],
-      "kind": "[variables('blanks')]",
       "properties": {
         "streamDeclarations": {
           "Custom-CyoloSentinelAnalyticsTable_CL": {
