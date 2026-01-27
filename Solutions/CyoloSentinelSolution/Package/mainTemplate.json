@@ -237,7 +237,7 @@
       "name": "[concat(parameters('workspace'),'/Microsoft.SecurityInsights/', variables('dataConnectorTemplateNameConnectorDefinition1'), variables('dataConnectorCCPVersion'))]",
       "location": "[parameters('workspace-location')]",
       "dependsOn": [
-        "[extensionResourceId(resourceId('Microsoft.OperationalInsights/workspaces', parameters('workspace')), 'Microsoft.SecurityInsights/contentPackages', variables('_solutionId'))]",
+        "[resourceId('Microsoft.OperationalInsights/workspaces/providers/contentPackages', parameters('workspace'), 'Microsoft.SecurityInsights', variables('_solutioncontentProductId'))]",
         "[resourceId('Microsoft.Insights/dataCollectionEndpoints', concat(parameters('workspace'), '-DCE'))]"
       ],
       "properties": {
@@ -447,7 +447,7 @@
       "name": "[concat(parameters('workspace'),'/Microsoft.SecurityInsights/', variables('dataConnectorTemplateNameConnections1'), variables('dataConnectorCCPVersion'))]",
       "location": "[parameters('workspace-location')]",
       "dependsOn": [
-        "[extensionResourceId(resourceId('Microsoft.OperationalInsights/workspaces', parameters('workspace')), 'Microsoft.SecurityInsights/contentPackages', variables('_solutionId'))]",
+        "[resourceId('Microsoft.OperationalInsights/workspaces/providers/contentPackages', parameters('workspace'), 'Microsoft.SecurityInsights', variables('_solutioncontentProductId'))]",
         "[resourceId('Microsoft.Insights/dataCollectionRules', 'CyoloActivity_DCR')]"
       ],
       "properties": {
