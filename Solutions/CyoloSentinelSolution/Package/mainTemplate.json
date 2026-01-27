@@ -97,7 +97,6 @@
       "apiVersion": "2022-10-01",
       "type": "Microsoft.OperationalInsights/workspaces/tables",
       "location": "[parameters('workspace-location')]",
-      "kind": null,
       "properties": {
         "schema": {
           "name": "Custom-CyoloSentinelAnalyticsTable_CL",
@@ -117,7 +116,6 @@
       "apiVersion": "2022-10-01",
       "type": "Microsoft.OperationalInsights/workspaces/tables",
       "location": "[parameters('workspace-location')]",
-      "kind": null,
       "properties": {
         "schema": {
           "name": "Custom-CyoloSentinelAuditTable_CL",
@@ -137,7 +135,6 @@
       "apiVersion": "2022-10-01",
       "type": "Microsoft.OperationalInsights/workspaces/tables",
       "location": "[parameters('workspace-location')]",
-      "kind": null,
       "properties": {
         "schema": {
           "name": "Custom-CyoloSentinelSystemTable_CL",
