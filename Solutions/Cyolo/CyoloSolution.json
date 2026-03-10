@@ -521,6 +521,10 @@
               "defaultValue": "[parameters('workspace')]",
               "type": "string"
             },
+            "workspace-location": {
+              "defaultValue": "[resourceGroup().location]",
+              "type": "string"
+            },
             "domainname": {
               "defaultValue": "",
               "type": "string",
