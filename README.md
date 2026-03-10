@@ -73,7 +73,7 @@ To get API credentials from Cyolo:
 
 You can deploy the solution directly from the Azure Portal by clicking the button below:
 
-[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fcdn.jsdelivr.net%2Fgh%2Fcyolosecurity%2Fcyolo-sentinel%40main%2FSolutions%2FCyolo%2FCyoloSolution.json)
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fcdn.jsdelivr.net%2Fgh%2Fcyolosecurity%2Fcyolo-sentinel%40zaure%2FSolutions%2FCyolo%2FCyoloSolution.json)
 
 > **Note:** If you encounter a CORS error with the deploy button, you can manually deploy by:
 > 1. Download `Solutions/Cyolo/CyoloSolution.json` from this repository
