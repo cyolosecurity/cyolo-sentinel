@@ -93,14 +93,14 @@
   "resources": [
     {
       "condition": "[parameters('enableAnalyticsLogs')]",
-      "name": "[concat(parameters('workspace'), '/Custom-CyoloSentinelAnalyticsTable_CL')]",
+      "name": "[concat(parameters('workspace'), '/CyoloSentinelAnalyticsTable_CL')]",
       "apiVersion": "2022-10-01",
       "type": "Microsoft.OperationalInsights/workspaces/tables",
       "location": "[parameters('workspace-location')]",
       "kind": null,
       "properties": {
         "schema": {
-          "name": "Custom-CyoloSentinelAnalyticsTable_CL",
+          "name": "CyoloSentinelAnalyticsTable_CL",
           "columns": [
             { "name": "TimeGenerated", "type": "datetime", "description": "The time when the record was generated" },
             { "name": "EventId", "type": "string", "description": "Unique identifier for the event" },
@@ -113,14 +113,14 @@
     },
     {
       "condition": "[parameters('enableAuditLogs')]",
-      "name": "[concat(parameters('workspace'), '/Custom-CyoloSentinelAuditTable_CL')]",
+      "name": "[concat(parameters('workspace'), '/CyoloSentinelAuditTable_CL')]",
       "apiVersion": "2022-10-01",
       "type": "Microsoft.OperationalInsights/workspaces/tables",
       "location": "[parameters('workspace-location')]",
       "kind": null,
       "properties": {
         "schema": {
-          "name": "Custom-CyoloSentinelAuditTable_CL",
+          "name": "CyoloSentinelAuditTable_CL",
           "columns": [
             { "name": "TimeGenerated", "type": "datetime", "description": "The time when the record was generated" },
             { "name": "AuditId", "type": "int", "description": "Unique identifier for the audit event" },
@@ -133,14 +133,14 @@
     },
     {
       "condition": "[parameters('enableSystemLogs')]",
-      "name": "[concat(parameters('workspace'), '/Custom-CyoloSentinelSystemTable_CL')]",
+      "name": "[concat(parameters('workspace'), '/CyoloSentinelSystemTable_CL')]",
       "apiVersion": "2022-10-01",
       "type": "Microsoft.OperationalInsights/workspaces/tables",
       "location": "[parameters('workspace-location')]",
       "kind": null,
       "properties": {
         "schema": {
-          "name": "Custom-CyoloSentinelSystemTable_CL",
+          "name": "CyoloSentinelSystemTable_CL",
           "columns": [
             { "name": "TimeGenerated", "type": "datetime", "description": "The time when the record was generated" },
             { "name": "SystemId", "type": "string", "description": "Unique identifier for the system event" },
@@ -187,45 +187,45 @@
                     {
                       "metricName": "Total Analytics logs received",
                       "legend": "Cyolo Sentinel Analytics Logs",
-                      "baseQuery": "Custom-CyoloSentinelAnalyticsTable_CL"
+                      "baseQuery": "CyoloSentinelAnalyticsTable_CL"
                     },
                     {
                       "metricName": "Total Audit logs received",
                       "legend": "Cyolo Sentinel Audit Logs",
-                      "baseQuery": "Custom-CyoloSentinelAuditTable_CL"
+                      "baseQuery": "CyoloSentinelAuditTable_CL"
                     },
                     {
                       "metricName": "Total System logs received",
                       "legend": "Cyolo Sentinel System Logs",
-                      "baseQuery": "Custom-CyoloSentinelSystemTable_CL"
+                      "baseQuery": "CyoloSentinelSystemTable_CL"
                     }
                   ],
                   "sampleQueries": [
                     {
                       "description": "Get Sample of Cyolo Analytics logs",
-                      "query": "Custom-CyoloSentinelAnalyticsTable_CL | take 10"
+                      "query": "CyoloSentinelAnalyticsTable_CL | take 10"
                     },
                     {
                       "description": "Get Sample of Cyolo Audit logs",
-                      "query": "Custom-CyoloSentinelAuditTable_CL | take 10"
+                      "query": "CyoloSentinelAuditTable_CL | take 10"
                     },
                     {
                       "description": "Get Sample of Cyolo System logs",
-                      "query": "Custom-CyoloSentinelSystemTable_CL | take 10"
+                      "query": "CyoloSentinelSystemTable_CL | take 10"
                     }
                   ],
                   "dataTypes": [
                     {
-                      "name": "Custom-CyoloSentinelAnalyticsTable_CL",
-                      "lastDataReceivedQuery": "Custom-CyoloSentinelAnalyticsTable_CL\n       | where TimeGenerated > ago(12h)                | summarize Time = max(TimeGenerated)\n            | where isnotempty(Time)"
+                      "name": "CyoloSentinelAnalyticsTable_CL",
+                      "lastDataReceivedQuery": "CyoloSentinelAnalyticsTable_CL\n       | where TimeGenerated > ago(12h)                | summarize Time = max(TimeGenerated)\n            | where isnotempty(Time)"
                     },
                     {
-                      "name": "Custom-CyoloSentinelAuditTable_CL",
-                      "lastDataReceivedQuery": "Custom-CyoloSentinelAuditTable_CL\n       | where TimeGenerated > ago(12h)                | summarize Time = max(TimeGenerated)\n            | where isnotempty(Time)"
+                      "name": "CyoloSentinelAuditTable_CL",
+                      "lastDataReceivedQuery": "CyoloSentinelAuditTable_CL\n       | where TimeGenerated > ago(12h)                | summarize Time = max(TimeGenerated)\n            | where isnotempty(Time)"
                     },
                     {
-                      "name": "Custom-CyoloSentinelSystemTable_CL",
-                      "lastDataReceivedQuery": "Custom-CyoloSentinelSystemTable_CL\n       | where TimeGenerated > ago(12h)                | summarize Time = max(TimeGenerated)\n            | where isnotempty(Time)"
+                      "name": "CyoloSentinelSystemTable_CL",
+                      "lastDataReceivedQuery": "CyoloSentinelSystemTable_CL\n       | where TimeGenerated > ago(12h)                | summarize Time = max(TimeGenerated)\n            | where isnotempty(Time)"
                     }
                   ],
                   "connectivityCriteria": [
@@ -521,11 +521,11 @@
                 "dataType": "Custom-CyoloSentinelAnalyticsTable_CL",
                 "auth": {
                   "type": "Basic",
-                  "username": "[parameters('apiId')]",
-                  "password": "[parameters('apiToken')]"
+                  "username": "[[parameters('apiId')]",
+                  "password": "[[parameters('apiToken')]"
                 },
                 "request": {
-                  "apiEndpoint": "[concat(parameters('apiUrl'), '/v1/analytics_log')]",
+                  "apiEndpoint": "[[concat(parameters('apiUrl'), '/v1/analytics_log')]",
                   "headers": {
                     "Accept": "application/json",
                     "User-Agent": "Scuba"
@@ -556,11 +556,11 @@
                 "dataType": "Custom-CyoloSentinelAuditTable_CL",
                 "auth": {
                   "type": "Basic",
-                  "username": "[parameters('apiId')]",
-                  "password": "[parameters('apiToken')]"
+                  "username": "[[parameters('apiId')]",
+                  "password": "[[parameters('apiToken')]"
                 },
                 "request": {
-                  "apiEndpoint": "[concat(parameters('apiUrl'), '/v1/audit_log')]",
+                  "apiEndpoint": "[[concat(parameters('apiUrl'), '/v1/audit_log')]",
                   "headers": {
                     "Accept": "application/json",
                     "User-Agent": "Scuba"
@@ -591,11 +591,11 @@
                 "dataType": "Custom-CyoloSentinelSystemTable_CL",
                 "auth": {
                   "type": "Basic",
-                  "username": "[parameters('apiId')]",
-                  "password": "[parameters('apiToken')]"
+                  "username": "[[parameters('apiId')]",
+                  "password": "[[parameters('apiToken')]"
                 },
                 "request": {
-                  "apiEndpoint": "[concat(parameters('apiUrl'), '/v1/system_log')]",
+                  "apiEndpoint": "[[concat(parameters('apiUrl'), '/v1/system_log')]",
                   "headers": {
                     "Accept": "application/json",
                     "User-Agent": "Scuba"
