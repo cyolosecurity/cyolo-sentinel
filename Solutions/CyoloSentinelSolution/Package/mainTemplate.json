@@ -92,6 +92,17 @@
   },
   "resources": [
     {
+      "type": "Microsoft.Insights/dataCollectionEndpoints",
+      "apiVersion": "2022-06-01",
+      "name": "[concat(parameters('workspace'), '-DCE')]",
+      "location": "[parameters('workspace-location')]",
+      "properties": {
+        "networkAcls": {
+          "publicNetworkAccess": "Enabled"
+        }
+      }
+    },
+    {
       "condition": "[parameters('enableAnalyticsLogs')]",
       "name": "[concat(parameters('workspace'), '/CyoloSentinelAnalyticsTable_CL')]",
       "apiVersion": "2022-10-01",
