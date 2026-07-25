@@ -628,7 +628,7 @@
     {
       "type": "Microsoft.OperationalInsights/workspaces/providers/contentPackages",
       "apiVersion": "2023-04-01-preview",
-      "name": "[concat(parameters('workspace'), '/Microsoft.SecurityInsights/', variables('_solutioncontentProductId'))]",
+      "name": "[concat(parameters('workspace'), '/Microsoft.SecurityInsights/', variables('_solutionId'))]",
       "location": "[parameters('workspace-location')]",
       "properties": {
         "version": "[variables('_solutionVersion')]",
