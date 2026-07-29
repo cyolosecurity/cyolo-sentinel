@@ -715,14 +715,22 @@
                   "password": "[[parameters('apiToken')]"
                 },
                 "request": {
-                  "apiEndpoint": "[[concat(parameters('apiUrl'), '/v1/analytics_log')]",
+                  "apiEndpoint": "[[concat(parameters('apiUrl'), '/v1/activity_log')]",
+                  "httpMethod": "Get",
+                  "rateLimitQPS": 10,
+                  "retryCount": 3,
+                  "timeoutInSeconds": 60,
+                  "queryWindowInMin": 5,
+                  "queryTimeFormat": "yyyy-MM-ddTHH:mm:ssZ",
                   "headers": {
                     "Accept": "application/json",
                     "User-Agent": "Scuba"
                   },
-                  "httpMethod": "Get",
-                  "queryWindowInMin": 5,
-                  "logResponseContent": true
+                  "queryParameters": {
+                    "timestamp": "range~{_QueryWindowStartTime},{_QueryWindowEndTime}",
+                    "_sort": "+timestamp",
+                    "_count": 10000
+                  }
                 },
                 "response": {
                   "eventsJsonPaths": ["$.data[*]"]
@@ -751,13 +759,21 @@
                 },
                 "request": {
                   "apiEndpoint": "[[concat(parameters('apiUrl'), '/v1/audit_log')]",
+                  "httpMethod": "Get",
+                  "rateLimitQPS": 10,
+                  "retryCount": 3,
+                  "timeoutInSeconds": 60,
+                  "queryWindowInMin": 5,
+                  "queryTimeFormat": "yyyy-MM-ddTHH:mm:ssZ",
                   "headers": {
                     "Accept": "application/json",
                     "User-Agent": "Scuba"
                   },
-                  "httpMethod": "Get",
-                  "queryWindowInMin": 5,
-                  "logResponseContent": true
+                  "queryParameters": {
+                    "timestamp": "range~{_QueryWindowStartTime},{_QueryWindowEndTime}",
+                    "_sort": "+timestamp",
+                    "_count": 10000
+                  }
                 },
                 "response": {
                   "eventsJsonPaths": ["$.data[*]"]
@@ -786,13 +802,21 @@
                 },
                 "request": {
                   "apiEndpoint": "[[concat(parameters('apiUrl'), '/v1/system_log')]",
+                  "httpMethod": "Get",
+                  "rateLimitQPS": 10,
+                  "retryCount": 3,
+                  "timeoutInSeconds": 60,
+                  "queryWindowInMin": 5,
+                  "queryTimeFormat": "yyyy-MM-ddTHH:mm:ssZ",
                   "headers": {
                     "Accept": "application/json",
                     "User-Agent": "Scuba"
                   },
-                  "httpMethod": "Get",
-                  "queryWindowInMin": 5,
-                  "logResponseContent": true
+                  "queryParameters": {
+                    "timestamp": "range~{_QueryWindowStartTime},{_QueryWindowEndTime}",
+                    "_sort": "+timestamp",
+                    "_count": 10000
+                  }
                 },
                 "response": {
                   "eventsJsonPaths": ["$.data[*]"]
