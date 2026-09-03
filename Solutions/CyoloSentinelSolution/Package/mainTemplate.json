@@ -25,7 +25,7 @@
       "type": "string",
       "minLength": 1,
       "metadata": {
-        "description": "📋 Workspace Name - Your existing Log Analytics workspace name (Microsoft Sentinel must be enabled on it). Required — leave blank and table resources fail with InvalidTemplate."
+        "description": "Required. Existing Log Analytics workspace name (Microsoft Sentinel must be enabled on it)."
       }
     },
     "resourceGroupName": {
