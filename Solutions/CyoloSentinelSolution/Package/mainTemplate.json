@@ -22,10 +22,10 @@
       }
     },
     "workspace": {
-      "defaultValue": "",
       "type": "string",
+      "minLength": 1,
       "metadata": {
-        "description": "📋 Workspace Name - Your existing Log Analytics workspace name (Microsoft Sentinel must be enabled on it)"
+        "description": "Required. Existing Log Analytics workspace name (Microsoft Sentinel must be enabled on it)."
       }
     },
     "resourceGroupName": {
