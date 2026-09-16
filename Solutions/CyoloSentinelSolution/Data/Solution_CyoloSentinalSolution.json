@@ -1,7 +1,7 @@
 {
   "Name": "Cyolo Sentinel Solution CCP",
   "Author": "Microsoft",
-  "Logo": "<img src=\"https://raw.githubusercontent.com/Azure/Azure-Sentinel/master/Logos/CortexXDR_Logo.svg\" width=\"75px\" height=\"75px\">",
+  "Logo": "<img src=\"https://raw.githubusercontent.com/cyolosecurity/cyolo-sentinel/main/Logos/Cyolo_Logo.svg\" width=\"75px\" height=\"75px\">",
   "Description": "The Cyolo Sentinel Solution data connector allows ingesting logs from the Cyolo IDAC into Microsoft Sentinel. The data connector is built on Microsoft Sentinel Codeless Connector Platform. It uses the Cyolo IDAC API to fetch logs.",
   "Data Connectors": [
     "Data Connectors/CyoloSentinelSolution/DataConnectorDefinition.json"
