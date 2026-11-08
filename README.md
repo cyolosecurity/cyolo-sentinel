@@ -31,20 +31,25 @@ Solutions/
 │   ├── SolutionMetadata.json
 │   └── ReleaseNotes.md
 │
-└── Cyolo Audit/
-    ├── Data Connectors/
-    │   └── CyoloAuditLogs_ccf/
-    │       ├── CyoloAuditLogs_ConnectorDefinition.json
-    │       ├── CyoloAuditLogs_DCR.json
-    │       ├── CyoloAuditLogs_PollingConfig.json
-    │       └── CyoloAuditLogs_Table.json
-    ├── Data/
-    │   └── Solution_CyoloAudit.json
-    ├── SolutionMetadata.json
-    └── ReleaseNotes.md
+├── Cyolo Audit/
+│   ├── Data Connectors/
+│   │   └── CyoloAuditLogs_ccf/
+│   │       ├── CyoloAuditLogs_ConnectorDefinition.json
+│   │       ├── CyoloAuditLogs_DCR.json
+│   │       ├── CyoloAuditLogs_PollingConfig.json
+│   │       └── CyoloAuditLogs_Table.json
+│   ├── Data/
+│   │   └── Solution_CyoloAudit.json
+│   ├── SolutionMetadata.json
+│   └── ReleaseNotes.md
+│
+└── CyoloSentinelSolution/
+    └── Package/                        # Current release, used by the Deploy to Azure button
+        ├── mainTemplate.json
+        └── createUiDefinition.json
 ```
 
-> The `Package/` folder (with `mainTemplate.json`, `CreateUiDefinition.json`, and `3.x.x.zip`) is generated automatically by the V3 packaging tool and is not committed here. `SolutionMetadata.json`, the `Data/` solution file, and `ReleaseNotes.md` are authored by Cyolo before packaging.
+> For Cyolo Activity and Cyolo Audit, the `Package/` folder (with `mainTemplate.json`, `CreateUiDefinition.json`, and `3.x.x.zip`) is generated automatically by the V3 packaging tool and is not committed here. `SolutionMetadata.json`, the `Data/` solution file, and `ReleaseNotes.md` are authored by Cyolo before packaging.
 
 ## Prerequisites
 
@@ -73,7 +78,7 @@ The template lives in `Solutions/CyoloSentinelSolution/Package/`.
 
 These solutions use Microsoft's V3 packaging tool. The tool combines the Connector Definition, DCR, Polling Config, and Table JSON files into an ARM template and generates the `Package` folder.
 
-1. Clone the [Azure-Sentinel](https://github.com/Azure/Azure-Sentinel) repository and copy a solution folder (e.g. `Solutions/Cyolo Activity`) into it.
+1. Clone the [Azure-Sentinel](https://github.com/Azure/Azure-Sentinel) repository to `~/git/Azure-Sentinel` and copy both solution folders into its `Solutions/` folder. The `BasePath` in each `Data/Solution_*.json` points at that location; change it if you clone elsewhere.
 2. Run the [V3 packaging tool](https://github.com/Azure/Azure-Sentinel/tree/master/Tools/Create-Azure-Sentinel-Solution/V3). It generates `mainTemplate.json`, `CreateUiDefinition.json`, and `3.x.x.zip` under `Package/`.
 3. See the [CCF README](https://github.com/Azure/Azure-Sentinel/blob/master/Tools/Create-Azure-Sentinel-Solution/V3/CCF_README.md) for CCF best practices.
 

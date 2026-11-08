@@ -15,8 +15,8 @@
       "dataType": "CyoloActivity_CL",
       "auth": {
         "type": "Basic",
-        "userName": "[[parameters('username')]",
-        "password": "[[parameters('password')]"
+        "UserName": "[[parameters('username')]",
+        "Password": "[[parameters('password')]"
       },
       "request": {
         "apiEndpoint": "[[concat(parameters('apiUrl'), '/v1/activity_log')]",
