@@ -1,0 +1,14 @@
+{
+  "workspace": {
+    "value": "Cyolo-Sentinel-Workspace-01"
+  },
+  "workspace-location": {
+    "value": "eastus"
+  },
+  "resourceGroupName": {
+    "value": "Cyolo-Sentinel-Solution-01"
+  },
+  "subscription": {
+    "value": "<your-subscription-id>"
+  }
+}

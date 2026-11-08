@@ -1,0 +1,108 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/0.1.2-preview/CreateUIDefinition.MultiVm.json#",
+  "handler": "Microsoft.Azure.CreateUIDef",
+  "version": "0.1.2-preview",
+  "parameters": {
+    "config": {
+      "basics": {
+        "description": "<img src=\"https://raw.githubusercontent.com/cyolosecurity/cyolo-sentinel/main/Logos/Cyolo_Logo.svg\" alt=\"Cyolo Logo\" width=\"75px\" height=\"75px\">\n\n**Note:** Please review the following before installing the solution:\n\n• Refer to the [Cyolo Sentinel Solution Documentation](https://example.com/cyolo-sentinel-docs)\n\n• Check for [known issues](https://aka.ms/sentinelsolutionsknownissues) before installation.\n\nThe [Cyolo Sentinel Solution](https://example.com) data connector allows ingesting logs from the Cyolo IDAC API into Microsoft Sentinel. It uses the Cyolo IDAC API to fetch logs and supports DCR-based ingestion time transformations for parsing security data into custom tables.\n\n**Data Connectors:** 1\n\n[Learn more about Microsoft Sentinel](https://aka.ms/azuresentinel) | [Learn more about Solutions](https://aka.ms/azuresentinelsolutionsdoc)",
+        "location": {
+          "visible": false
+        }
+      }
+    },
+    "basics": [
+      {
+        "name": "getLAWorkspace",
+        "type": "Microsoft.Solutions.ArmApiControl",
+        "toolTip": "This filters by workspaces that exist in the Resource Group selected",
+        "condition": "[greater(length(resourceGroup().name),0)]",
+        "request": {
+          "method": "GET",
+          "path": "[concat(subscription().id,'/providers/Microsoft.OperationalInsights/workspaces?api-version=2020-08-01')]"
+        }
+      },
+      {
+        "name": "workspace",
+        "type": "Microsoft.Common.DropDown",
+        "label": "Log Analytics Workspace",
+        "placeholder": "Select a workspace",
+        "toolTip": "Select an existing Log Analytics workspace with Microsoft Sentinel enabled",
+        "constraints": {
+          "allowedValues": "[map(filter(basics('getLAWorkspace').value, (filter) => contains(toLower(filter.id), toLower(resourceGroup().name))), (item) => parse(concat('{\"label\":\"', item.name, '\",\"value\":\"', item.name, '\"}')))]",
+          "required": true
+        },
+        "visible": true
+      }
+    ],
+    "steps": [
+      {
+        "name": "dataconnectors",
+        "label": "Cyolo Sentinel Solution Configuration",
+        "bladeTitle": "Configuration",
+        "elements": [
+          {
+            "name": "dataconnectors1-text",
+            "type": "Microsoft.Common.TextBlock",
+            "options": {
+              "text": "This Solution installs the data connector for Cyolo Sentinel Solution. You can get Cyolo IDAC data in your Microsoft Sentinel workspace. After installing the solution, configure and enable this data connector by following guidance in Manage solution view."
+            }
+          },
+          {
+            "name": "dataconnectors-link1",
+            "type": "Microsoft.Common.TextBlock",
+            "options": {
+              "link": {
+                "label": "Learn more about connecting data sources",
+                "uri": "https://docs.microsoft.com/azure/sentinel/connect-data-sources"
+              }
+            }
+          },
+          {
+            "name": "logStreamsSection",
+            "type": "Microsoft.Common.Section",
+            "label": "Log Stream Selection",
+            "elements": [
+              {
+                "name": "logStreamsInfo",
+                "type": "Microsoft.Common.TextBlock",
+                "options": {
+                  "text": "Select which log streams you want to ingest from Cyolo. You can enable or disable individual log streams based on your monitoring requirements. Note: You can modify these settings later if needed."
+                }
+              },
+              {
+                "name": "enableAnalyticsLogs",
+                "type": "Microsoft.Common.CheckBox",
+                "label": "Enable Analytics Logs",
+                "toolTip": "Ingest behavioral analytics data from Cyolo. This includes user activity patterns, access trends, and usage analytics.",
+                "defaultValue": true
+              },
+              {
+                "name": "enableAuditLogs",
+                "type": "Microsoft.Common.CheckBox",
+                "label": "Enable Audit Logs",
+                "toolTip": "Ingest audit trail data from Cyolo. This includes administrative actions, configuration changes, and compliance events.",
+                "defaultValue": true
+              },
+              {
+                "name": "enableSystemLogs",
+                "type": "Microsoft.Common.CheckBox",
+                "label": "Enable System Logs",
+                "toolTip": "Ingest system health and operational events from Cyolo. This includes infrastructure status, performance metrics, and system diagnostics.",
+                "defaultValue": true
+              }
+            ],
+            "visible": true
+          }
+        ]
+      }
+    ],
+    "outputs": {
+      "workspace-location": "[first(map(filter(basics('getLAWorkspace').value, (filter) => and(contains(toLower(filter.id), toLower(resourceGroup().name)),equals(filter.name,basics('workspace')))), (item) => item.location))]",
+      "workspace": "[basics('workspace')]",
+      "enableAnalyticsLogs": "[steps('dataconnectors').logStreamsSection.enableAnalyticsLogs]",
+      "enableAuditLogs": "[steps('dataconnectors').logStreamsSection.enableAuditLogs]",
+      "enableSystemLogs": "[steps('dataconnectors').logStreamsSection.enableSystemLogs]"
+    }
+  }
+}

@@ -61,6 +61,14 @@ Before you start, you'll need:
 3. Under **Roles** > **Admin**, assign the **Log Admin** role to the key.
 4. Copy the API Key ID and Secret.
 
+## Deploying the current release
+
+Until the Cyolo Activity and Cyolo Audit solutions are published in the Sentinel Content Hub, deploy the current packaged solution:
+
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fcyolosecurity%2Fcyolo-sentinel%2Fmain%2FSolutions%2FCyoloSentinelSolution%2FPackage%2FmainTemplate.json/createUIDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2Fcyolosecurity%2Fcyolo-sentinel%2Fmain%2FSolutions%2FCyoloSentinelSolution%2FPackage%2FcreateUiDefinition.json)
+
+The template lives in `Solutions/CyoloSentinelSolution/Package/`.
+
 ## Building the packaged solution
 
 These solutions use Microsoft's V3 packaging tool. The tool combines the Connector Definition, DCR, Polling Config, and Table JSON files into an ARM template and generates the `Package` folder.

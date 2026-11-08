@@ -1,0 +1,10 @@
+{
+  "templateFile": "mainTemplate.json",
+  "uiDefinitionFile": "CreateUiDefinition.json",
+  "name": "CyoloSentinelSolution",
+  "version": "1.0.0",
+  "publisher": "Cyolo",
+  "description": "Cyolo Sentinel Solution - Collect logs from Cyolo IDAC.",
+  "summary": "Ingest Cyolo logs into Microsoft Sentinel",
+  "categories": ["Security - Identity", "Security - Cloud", "Network"]
+}

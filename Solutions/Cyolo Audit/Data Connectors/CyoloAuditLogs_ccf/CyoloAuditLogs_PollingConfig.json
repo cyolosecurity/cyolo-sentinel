@@ -24,23 +24,16 @@
         "queryWindowInMin": 5,
         "httpMethod": "Get",
         "queryTimeFormat": "yyyy-MM-ddTHH:mm:ssZ",
-        "startTimeAttributeName": "from",
-        "endTimeAttributeName": "to",
         "retryCount": 3,
         "timeoutInSeconds": 60,
         "headers": {
           "Accept": "application/json"
         },
         "queryParameters": {
+          "timestamp": "range~{_QueryWindowStartTime},{_QueryWindowEndTime}",
           "_sort": "+timestamp",
           "_count": 10000
         }
-      },
-      "paging": {
-        "pagingType": "Offset",
-        "offsetParaName": "offset",
-        "pageSizeParaName": "limit",
-        "pageSize": 1000
       },
       "response": {
         "eventsJsonPaths": [
