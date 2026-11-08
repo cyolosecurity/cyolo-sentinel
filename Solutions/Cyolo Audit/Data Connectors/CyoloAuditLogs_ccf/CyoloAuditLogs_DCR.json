@@ -1,12 +1,17 @@
 {
-  "name": "CyoloActivity_DCR",
+  "name": "CyoloAuditDCR",
   "apiVersion": "2021-09-01-preview",
   "type": "Microsoft.Insights/dataCollectionRules",
-  "location": "<your-region>",
+  "location": "{{location}}",
+  "dependsOn": [
+    "CyoloAudit_CL"
+  ],
+  "kind": null,
   "properties": {
-    "dataCollectionEndpointId": "/subscriptions/<subscription-id>/resourceGroups/<resource-group>/providers/Microsoft.Insights/dataCollectionEndpoints/<dce-name>",
+    "dataCollectionEndpointId": "{{dataCollectionEndpointId}}",
+    "workspaceResourceId": "{{workspaceResourceId}}",
     "streamDeclarations": {
-      "Custom-Cyolo-Sentinel-DCR": {
+      "Custom-CyoloAuditLog": {
         "columns": [
           { "name": "id", "type": "string", "description": "Event ID" },
           { "name": "kind", "type": "string", "description": "Event kind" },
@@ -44,21 +49,27 @@
         ]
       }
     },
+    "dataSources": {},
     "destinations": {
       "logAnalytics": [
         {
-          "workspaceResourceId": "/subscriptions/<subscription-id>/resourceGroups/<resource-group>/providers/Microsoft.OperationalInsights/workspaces/<workspace-name>",
-          "name": "<workspace-name>"
+          "name": "cyoloWorkspace",
+          "workspaceResourceId": "{{workspaceResourceId}}"
         }
       ]
     },
     "dataFlows": [
       {
-        "streams": ["Custom-Cyolo-Sentinel-DCR"],
-        "destinations": ["<workspace-name>"],
-        "transformKql": "source \r\n| project-rename \r\n TimeGenerated=timestamp,eventKind=['kind'],ID=id,remoteAddress=remote_address,Action=action,Result=result,subjectId=subject_id,subjectName=subject_name,subjectKind=subject_kind,authorityKind=authority_kind,authorityId=authority_id,authorityName=authority_name,objectKind=object_kind,objectId=object_id,objectName=object_name,sessionId=session_id,Message=message,nodeId=node_id,Client=client,Data=data,Rules=rules,countryCode=country_code,HostName=hostname,transactionId=transaction_id,eventId=event_id,Severity=severity,siteId=site_id,siteName=site_name,credentialsOrigin=credentials_origin,credentialsId=credentials_id,credentialsName=credentials_name,destinationHost=destination_host,destinationPort=destination_port",
-        "outputStream": "Custom-CyoloActivity_CL"
+        "streams": [
+          "Custom-CyoloAuditLog"
+        ],
+        "destinations": [
+          "cyoloWorkspace"
+        ],
+        "transformKql": "source\n| project-rename\n TimeGenerated=timestamp, eventKind=['kind'], ID=['id'], remoteAddress=remote_address, Action=action, Result=result, subjectId=subject_id, subjectName=subject_name, subjectKind=subject_kind, authorityKind=authority_kind, authorityId=authority_id, authorityName=authority_name, objectKind=object_kind, objectId=object_id, objectName=object_name, sessionId=session_id, Message=message, nodeId=node_id, Client=client, Data=data, Rules=rules, countryCode=country_code, HostName=hostname, transactionId=transaction_id, eventId=event_id, Severity=severity, siteId=site_id, siteName=site_name, credentialsOrigin=credentials_origin, credentialsId=credentials_id, credentialsName=credentials_name, destinationHost=destination_host, destinationPort=destination_port",
+        "outputStream": "Custom-CyoloAudit_CL"
       }
-    ]
+    ],
+    "provisioningState": "Succeeded"
   }
 }

@@ -1,0 +1,13 @@
+{
+  "Name": "Cyolo Activity",
+  "Author": "Cyolo - support@cyolo.io",
+  "Logo": "<img src=\"https://raw.githubusercontent.com/cyolosecurity/cyolo-sentinel/main/Logos/Cyolo_Logo.svg\" width=\"75px\" height=\"75px\">",
+  "Description": "The [Cyolo](https://www.cyolo.io/) Activity solution for Microsoft Sentinel contains a CCF-based data connector that ingests Cyolo Zero-Trust Access activity logs \u2014 user access events, authentication, and sessions \u2014 into your Microsoft Sentinel workspace for security monitoring, threat detection, and incident investigation.",
+  "Data Connectors": [
+    "Data Connectors/CyoloActivityLogs_ccf/CyoloActivityLogs_ConnectorDefinition.json"
+  ],
+  "Metadata": "SolutionMetadata.json",
+  "BasePath": "Solutions/Cyolo Activity",
+  "Version": "3.0.0",
+  "TemplateSpec": true
+}

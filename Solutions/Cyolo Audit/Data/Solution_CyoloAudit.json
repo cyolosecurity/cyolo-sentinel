@@ -1,0 +1,13 @@
+{
+  "Name": "Cyolo Audit",
+  "Author": "Cyolo - support@cyolo.io",
+  "Logo": "<img src=\"https://raw.githubusercontent.com/cyolosecurity/cyolo-sentinel/main/Logos/Cyolo_Logo.svg\" width=\"75px\" height=\"75px\">",
+  "Description": "The [Cyolo](https://www.cyolo.io/) Audit solution for Microsoft Sentinel contains a CCF-based data connector that ingests Cyolo audit logs \u2014 administrative actions, configuration changes, and compliance events \u2014 into your Microsoft Sentinel workspace for security monitoring and compliance investigation.",
+  "Data Connectors": [
+    "Data Connectors/CyoloAuditLogs_ccf/CyoloAuditLogs_ConnectorDefinition.json"
+  ],
+  "Metadata": "SolutionMetadata.json",
+  "BasePath": "Solutions/Cyolo Audit",
+  "Version": "3.0.0",
+  "TemplateSpec": true
+}
