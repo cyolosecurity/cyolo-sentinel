@@ -1,45 +1,38 @@
-# Cyolo Microsoft Sentinel Solutions
+# Cyolo Microsoft Sentinel Solution
 
-This repository contains the Cyolo data connector solutions for Microsoft Sentinel. They let you ingest Cyolo Zero-Trust Access logs into your Sentinel workspace for security monitoring, threat detection, and incident investigation.
+This repository contains the Cyolo solution for Microsoft Sentinel. It lets you ingest Cyolo Zero-Trust Access logs into your Sentinel workspace for security monitoring, threat detection, and incident investigation.
 
 The connectors are built on Microsoft's **Codeless Connector Platform (CCP)** using the **CCF (Codeless Connector Framework)** file layout, and use the Cyolo REST API to pull logs on a scheduled basis.
 
-## Solutions
+## Data connectors
 
-This repository ships two solutions, each following the [CCF solution structure](https://github.com/Azure/Azure-Sentinel/tree/master/Solutions/DomainTools%20CCF):
+The **Cyolo** solution follows the [CCF solution structure](https://github.com/Azure/Azure-Sentinel/tree/master/Solutions/DomainTools%20CCF) and contains two CCF data connectors. Each one can be connected independently:
 
-| Solution | Log type | API endpoint | Custom table |
-|----------|----------|--------------|--------------|
+| Data connector | Log type | API endpoint | Custom table |
+|----------------|----------|--------------|--------------|
 | **Cyolo Activity** | User access events, authentication, sessions | `/v1/activity_log` | `CyoloActivity_CL` |
 | **Cyolo Audit** | Admin actions, configuration changes, compliance | `/v1/audit_log` | `CyoloAudit_CL` |
 
 ## Repository Structure
 
-Each solution follows the CCF layout, with the CCF Data Connectors folder containing only the four required files:
+Each CCF data connector folder contains only the four required files:
 
 ```
 Solutions/
-├── Cyolo Activity/
+├── Cyolo/
 │   ├── Data Connectors/
-│   │   └── CyoloActivityLogs_ccf/
-│   │       ├── CyoloActivityLogs_ConnectorDefinition.json
-│   │       ├── CyoloActivityLogs_DCR.json
-│   │       ├── CyoloActivityLogs_PollingConfig.json
-│   │       └── CyoloActivityLogs_Table.json
-│   ├── Data/
-│   │   └── Solution_CyoloActivity.json
-│   ├── SolutionMetadata.json
-│   └── ReleaseNotes.md
-│
-├── Cyolo Audit/
-│   ├── Data Connectors/
+│   │   ├── CyoloActivityLogs_ccf/
+│   │   │   ├── CyoloActivityLogs_ConnectorDefinition.json
+│   │   │   ├── CyoloActivityLogs_DCR.json
+│   │   │   ├── CyoloActivityLogs_PollingConfig.json
+│   │   │   └── CyoloActivityLogs_Table.json
 │   │   └── CyoloAuditLogs_ccf/
 │   │       ├── CyoloAuditLogs_ConnectorDefinition.json
 │   │       ├── CyoloAuditLogs_DCR.json
 │   │       ├── CyoloAuditLogs_PollingConfig.json
 │   │       └── CyoloAuditLogs_Table.json
 │   ├── Data/
-│   │   └── Solution_CyoloAudit.json
+│   │   └── Solution_Cyolo.json
 │   ├── SolutionMetadata.json
 │   └── ReleaseNotes.md
 │
@@ -49,7 +42,7 @@ Solutions/
         └── createUiDefinition.json
 ```
 
-> For Cyolo Activity and Cyolo Audit, the `Package/` folder (with `mainTemplate.json`, `CreateUiDefinition.json`, and `3.x.x.zip`) is generated automatically by the V3 packaging tool and is not committed here. `SolutionMetadata.json`, the `Data/` solution file, and `ReleaseNotes.md` are authored by Cyolo before packaging.
+> For the Cyolo solution, the `Package/` folder (with `mainTemplate.json`, `CreateUiDefinition.json`, and `3.x.x.zip`) is generated automatically by the V3 packaging tool and is not committed here. `SolutionMetadata.json`, the `Data/` solution file, and `ReleaseNotes.md` are authored by Cyolo before packaging.
 
 ## Prerequisites
 
@@ -68,7 +61,7 @@ Before you start, you'll need:
 
 ## Deploying the current release
 
-Until the Cyolo Activity and Cyolo Audit solutions are published in the Sentinel Content Hub, deploy the current packaged solution:
+Until the Cyolo solution is published in the Sentinel Content Hub, deploy the current packaged solution:
 
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fcyolosecurity%2Fcyolo-sentinel%2Fmain%2FSolutions%2FCyoloSentinelSolution%2FPackage%2FmainTemplate.json/createUIDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2Fcyolosecurity%2Fcyolo-sentinel%2Fmain%2FSolutions%2FCyoloSentinelSolution%2FPackage%2FcreateUiDefinition.json)
 
@@ -76,9 +69,9 @@ The template lives in `Solutions/CyoloSentinelSolution/Package/`.
 
 ## Building the packaged solution
 
-These solutions use Microsoft's V3 packaging tool. The tool combines the Connector Definition, DCR, Polling Config, and Table JSON files into an ARM template and generates the `Package` folder.
+The solution uses Microsoft's V3 packaging tool. The tool combines the Connector Definition, DCR, Polling Config, and Table JSON files into an ARM template and generates the `Package` folder.
 
-1. Clone the [Azure-Sentinel](https://github.com/Azure/Azure-Sentinel) repository to `~/git/Azure-Sentinel` and copy both solution folders into its `Solutions/` folder. The `BasePath` in each `Data/Solution_*.json` points at that location; change it if you clone elsewhere.
+1. Clone the [Azure-Sentinel](https://github.com/Azure/Azure-Sentinel) repository to `~/git/Azure-Sentinel` and copy `Solutions/Cyolo` into its `Solutions/` folder. The `BasePath` in `Data/Solution_Cyolo.json` points at that location; change it if you clone elsewhere.
 2. Run the [V3 packaging tool](https://github.com/Azure/Azure-Sentinel/tree/master/Tools/Create-Azure-Sentinel-Solution/V3). It generates `mainTemplate.json`, `CreateUiDefinition.json`, and `3.x.x.zip` under `Package/`.
 3. See the [CCF README](https://github.com/Azure/Azure-Sentinel/blob/master/Tools/Create-Azure-Sentinel-Solution/V3/CCF_README.md) for CCF best practices.
 
@@ -86,7 +79,7 @@ These solutions use Microsoft's V3 packaging tool. The tool combines the Connect
 
 After packaging, validate the CCF Data Connector by deploying `mainTemplate.json` via **Deploy a custom template** in the Azure portal. Once deployment completes:
 
-1. Go to the **Data Connectors** tab in Microsoft Sentinel and select the Cyolo CCF Data Connector.
+1. Go to the **Data Connectors** tab in Microsoft Sentinel and select the Cyolo Activity or Cyolo Audit data connector.
 2. Click **Open Connector Page**.
 3. Enter your API URL and credentials, then select **Connect**.
 

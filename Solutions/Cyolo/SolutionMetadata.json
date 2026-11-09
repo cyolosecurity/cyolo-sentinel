@@ -1,6 +1,6 @@
 {
   "publisherId": "cyolo.io",
-  "offerId": "azure-sentinel-solution-cyoloaudit",
+  "offerId": "azure-sentinel-solution-cyolo",
   "firstPublishDate": "2026-11-08",
   "providers": [
     "Cyolo"
