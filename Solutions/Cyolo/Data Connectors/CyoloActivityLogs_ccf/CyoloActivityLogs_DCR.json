@@ -9,7 +9,6 @@
   "kind": null,
   "properties": {
     "dataCollectionEndpointId": "{{dataCollectionEndpointId}}",
-    "workspaceResourceId": "{{workspaceResourceId}}",
     "streamDeclarations": {
       "Custom-CyoloActivityLog": {
         "columns": [
