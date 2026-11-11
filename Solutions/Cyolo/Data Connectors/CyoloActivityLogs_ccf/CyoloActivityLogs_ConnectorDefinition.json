@@ -7,7 +7,7 @@
   "properties": {
     "connectorUiConfig": {
       "id": "CyoloActivityCCFDefinition",
-      "title": "Cyolo Activity (using REST API)",
+      "title": "Cyolo Activity",
       "publisher": "Cyolo",
       "descriptionMarkdown": "The Cyolo Activity data connector allows you to connect to your Cyolo instance and ingest activity logs into Microsoft Sentinel. The connector is built on Microsoft Sentinel's Codeless Connector Platform and uses the Cyolo REST API to fetch user access, authentication, and session events. DCR-based ingestion-time transformations parse the received events into custom columns for better query performance.",
       "graphQueriesTableName": "CyoloActivity_CL",

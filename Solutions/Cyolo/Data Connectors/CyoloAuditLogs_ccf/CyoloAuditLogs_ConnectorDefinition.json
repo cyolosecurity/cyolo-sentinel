@@ -7,7 +7,7 @@
   "properties": {
     "connectorUiConfig": {
       "id": "CyoloAuditCCFDefinition",
-      "title": "Cyolo Audit (using REST API)",
+      "title": "Cyolo Audit",
       "publisher": "Cyolo",
       "descriptionMarkdown": "The Cyolo Audit data connector allows you to connect to your Cyolo instance and ingest audit logs \u2014 administrative actions, configuration changes, and compliance events \u2014 into Microsoft Sentinel. The connector is built on Microsoft Sentinel's Codeless Connector Platform and uses the Cyolo REST API. DCR-based ingestion-time transformations parse the received events into custom columns for better query performance.",
       "graphQueriesTableName": "CyoloAudit_CL",
