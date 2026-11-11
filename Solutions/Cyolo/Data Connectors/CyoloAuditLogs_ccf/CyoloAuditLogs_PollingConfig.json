@@ -19,7 +19,7 @@
         "Password": "[[parameters('password')]"
       },
       "request": {
-        "apiEndpoint": "[[concat(parameters('apiUrl'), '/v1/audit_log')]",
+        "apiEndpoint": "[[concat(if(startsWith(toLower(trim(parameters('apiUrl'))), 'http'), '', 'https://'), if(endsWith(trim(parameters('apiUrl')), '/'), substring(trim(parameters('apiUrl')), 0, sub(length(trim(parameters('apiUrl'))), 1)), trim(parameters('apiUrl'))), '/v1/audit_log')]",
         "rateLimitQPS": 10,
         "queryWindowInMin": 5,
         "httpMethod": "Get",
